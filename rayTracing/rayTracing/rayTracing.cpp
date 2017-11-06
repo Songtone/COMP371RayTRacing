@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include "CImg.h"
+#include "generateScene.h"
 
 using namespace std;
 string line;
