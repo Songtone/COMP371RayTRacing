@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include "CImg.h"
 
 using namespace std;
 string line;
