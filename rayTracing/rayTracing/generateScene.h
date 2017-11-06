@@ -4,21 +4,22 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-//#include "glm.hpp"
+#include "camera.h"
+#include "model.h"
+#include "sphere.h"
+#include "light.h"
 
 using namespace std;
 
 class GenerateScene {
+
 public:
-	GenerateScene(const char* sceneFile) {
+	Camera camera;
+	Model model;
+	Sphere sphere;
+	Light light;
 
-		string read;
-		ifstream readSceneFile(sceneFile);
-		if(readSceneFile.is_open()){
-			//go through the file while dividing the attributes of each objects
-		}
 
-	}
 };
 
 
