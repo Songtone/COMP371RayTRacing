@@ -9,7 +9,7 @@
 #include "sphere.h"
 #include "light.h"
 
-using namespace std;
+
 
 class GenerateScene {
 
