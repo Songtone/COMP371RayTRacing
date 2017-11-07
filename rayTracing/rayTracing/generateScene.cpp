@@ -2,8 +2,17 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "camera.h"
+#include "sphere.h"
+#include "light.h"
+#include "model.h"
 
 using namespace std;
+
+Camera camera;
+Sphere sphere;
+Light light;
+Model model;
 
 void createCameraPosition(string result);
 void createCameraFOV(string result);
@@ -83,4 +92,110 @@ void readTextFile(string fileName) {
 		}
 	}
 	readFile.close();
+}
+//string splitting(string s, string delimiter) {
+//	int counter = 0;
+//	size_t pos = 0;
+//	string *storing;
+//	storing = new string[];
+//	while ((pos = s.find(delimiter)) != string::npos) {
+//		storing[counter] = s.substr(0, pos);
+//		s.erase(0, pos + delimiter.length());
+//		counter++;
+//	}
+//
+//	
+//
+//}
+void createCameraPosition(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+
+	camera.setCamPosX(stod(storing[1]));
+	camera.setCamPosY(stod(storing[2]));
+	camera.setCamPosZ(stod(storing[3]));
+}
+void createCameraFOV(string result){
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	camera.setFieldOfView(stod(storing[1]));
+
+}
+void createCameraFocalLength(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	camera.setFocalLength(stod(storing[1]));
+
+}
+void createCameraAspectRatio(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	camera.setAspectRatio(stod(storing[1]));
+
+}
+void createSpherePosition(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	camera.setAspectRatio(stod(storing[1]));
+
+}
+void createSphereRadius(string result) {
+
+}
+void createSphereAmbiant(string result) {
+
+}
+void createSphereDiffusion(string result) {
+
+}
+void createSphereSpecular(string result) {
+
+}
+void createSphereShininess(string result) {
+
 }
