@@ -6,6 +6,7 @@
 using namespace std;
 
 class Sphere {
+public:
 	float posX, posY, posZ;
 	float rad;
 	float amb1, amb2, amb3;

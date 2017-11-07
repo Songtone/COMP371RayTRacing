@@ -13,6 +13,10 @@ public:
 	float spe1, spe2, spe3;
 	float shi;
 
+	void setModelName(string name) {
+		modelFile = name;
+	}
+
 	void setAmb1(float a1) {
 		amb1 = a1;
 	}
@@ -73,8 +77,9 @@ public:
 	float getShi() {
 		return shi;
 	}
-	Model() : amb1(0), amb2(0), amb3(0), dif1(0), dif2(0), dif3(0), spe1(0), spe2(0), spe3(0), shi(0) {};
+	Model() : modelFile("default"),amb1(0), amb2(0), amb3(0), dif1(0), dif2(0), dif3(0), spe1(0), spe2(0), spe3(0), shi(0) {};
 	Model(const Model& m) {
+		modelFile = m.modelFile;
 		amb1 = m.amb1;
 		amb2 = m.amb2;
 		amb3 = m.amb3;

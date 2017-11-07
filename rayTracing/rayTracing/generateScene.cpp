@@ -2,38 +2,16 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "camera.h"
-#include "sphere.h"
-#include "light.h"
-#include "model.h"
+#include "generateScene.h"
+#include "CImg.h"
+#include "../glm/glm.hpp"
 
 using namespace std;
 
-Camera camera;
-Sphere sphere;
-Light light;
-Model model;
 
-void createCameraPosition(string result);
-void createCameraFOV(string result);
-void createCameraFocalLength(string result);
-void createCameraAspectRatio(string result);
+int maint() {
 
-void createSpherePosition(string result);
-void createSphereRadius(string result);
-void createSphereAmbiant(string result);
-void createSphereDiffusion(string result);
-void createSphereSpecular(string result);
-void createSphereShininess(string result);
-
-void createLightPosition(string result);
-void createLightColor(string result);
-
-void createModelName(string result);
-void createModelAmbiance(string result);
-void createModelDiffusion(string result);
-void createModelSpecular(string result);
-void createModelShininess(string result);
+}
 
 void readTextFile(string fileName) {
 	ifstream readFile(fileName);
@@ -107,6 +85,8 @@ void readTextFile(string fileName) {
 //	
 //
 //}
+
+//Camera functions
 void createCameraPosition(string result) {
 
 	string delimiter = " ";
@@ -169,6 +149,7 @@ void createCameraAspectRatio(string result) {
 	camera.setAspectRatio(stod(storing[1]));
 
 }
+//Sphere Functions
 void createSpherePosition(string result) {
 
 	string delimiter = " ";
@@ -181,21 +162,202 @@ void createSpherePosition(string result) {
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	camera.setAspectRatio(stod(storing[1]));
+	sphere.setSpherePosX(stod(storing[1]));
+	sphere.setSpherePosY(stod(storing[2]));
+	sphere.setSpherePosZ(stod(storing[3]));
 
 }
 void createSphereRadius(string result) {
 
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	sphere.setRadius(stod(storing[1]));
 }
 void createSphereAmbiant(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	sphere.setAmb1(stod(storing[1]));
+	sphere.setAmb2(stod(storing[2]));
+	sphere.setAmb3(stod(storing[3]));
 
 }
 void createSphereDiffusion(string result) {
 
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	sphere.setDif1(stod(storing[1]));
+	sphere.setDif2(stod(storing[2]));
+	sphere.setDif3(stod(storing[3]));
+
 }
 void createSphereSpecular(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	sphere.setSpe1(stod(storing[1]));
+	sphere.setSpe2(stod(storing[2]));
+	sphere.setSpe3(stod(storing[3]));
 
 }
 void createSphereShininess(string result) {
 
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	sphere.setShi(stod(storing[1]));
+	
+}
+//Light Functions
+void createLightPosition(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	light.setLightPosX(stod(storing[1]));
+	light.setLightPosY(stod(storing[2]));
+	light.setLightPosZ(stod(storing[3]));
+
+}
+void createLightColor(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	light.setColor1(stod(storing[1]));
+	light.setColor2(stod(storing[2]));
+	light.setColor3(stod(storing[3]));
+}
+//Model Functions
+void createModelName(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	model.setModelName(storing[0]);
+}
+void createModelAmbiance(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	model.setAmb1(stod(storing[1]));
+	model.setAmb2(stod(storing[2]));
+	model.setAmb3(stod(storing[3]));
+
+}
+void createModelDiffusion(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	model.setDif1(stod(storing[1]));
+	model.setDif2(stod(storing[2]));
+	model.setDif3(stod(storing[3]));
+}
+void createModelSpecular(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	model.setSpe1(stod(storing[1]));
+	model.setSpe2(stod(storing[2]));
+	model.setSpe3(stod(storing[3]));
+
+}
+void createModelShininess(string result) {
+
+	string delimiter = " ";
+	int counter = 0;
+	size_t pos = 0;
+	string *storing;
+	storing = new string[];
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing[counter] = result.substr(0, pos);
+		result.erase(0, pos + delimiter.length());
+		counter++;
+	}
+	model.setShi(stod(storing[1]));
+	
 }

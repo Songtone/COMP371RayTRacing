@@ -4,6 +4,7 @@
 #include <iostream>
 
 class Light {
+public:
 	float posX, posY, posZ;
 	float col1, col2, col3, col4;
 

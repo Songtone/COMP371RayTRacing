@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="generateScene.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="sphere.h" />
@@ -155,7 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generateScene.cpp" />
-    <ClCompile Include="rayTracing.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
