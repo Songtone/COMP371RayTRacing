@@ -11,6 +11,8 @@ Sphere sphere;
 Light light;
 Model model;
 
+void readTextFile(string fileName);
+
 void createCameraPosition(string result);
 void createCameraFOV(string result);
 void createCameraFocalLength(string result);

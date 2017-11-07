@@ -8,45 +8,45 @@ using namespace std;
 
 class Camera {
 public:
-	float posX, posY, posZ;
-	float fieldOfView;
-	float focalLength;
-	float aspectRatio;
+	double posX, posY, posZ;
+	double fieldOfView;
+	double focalLength;
+	double aspectRatio;
 
-	void setCamPosX(float positionX) {
+	/*void setCamPosX(double positionX) {
 		posX = positionX;
 	}
-	float getCamPosX() {
+	double getCamPosX() {
 		return posX;
 	}
-	void setCamPosY(float positionY) {
+	void setCamPosY(double positionY) {
 		posY = positionY;
 	}
-	float getCamPosY() {
+	double getCamPosY() {
 		return posY;
 	}
-	void setCamPosZ(float positionZ) {
+	void setCamPosZ(double positionZ) {
 		posZ = positionZ;
 	}
-	float getCamPosZ() {
+	double getCamPosZ() {
 		return posZ;
 	}
-	void setFieldOfView(float fov) {
+	void setFieldOfView(double fov) {
 		fieldOfView = fov;
 	}
-	float getFieldOfView() {
+	double getFieldOfView() {
 		return fieldOfView;
 	}
-	void setFocalLength(float f) {
+	void setFocalLength(double f) {
 		focalLength = f;
 	}
-	float getFocalLength() {
+	double getFocalLength() {
 		return focalLength;
 	}
-	void setAspectRatio(float a) {
+	void setAspectRatio(double a) {
 		aspectRatio = a;
 	}
-	float getAspectRatio() {
+	double getAspectRatio() {
 		return aspectRatio;
 	}
 
@@ -59,7 +59,7 @@ public:
 		fieldOfView = c.fieldOfView;
 		focalLength = c.focalLength;
 		aspectRatio = c.aspectRatio;
-	}
+	}*/
 };
 
 

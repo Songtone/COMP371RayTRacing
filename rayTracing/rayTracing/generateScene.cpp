@@ -2,6 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "camera.h"
+#include "sphere.h"
+#include "light.h"
+#include "model.h"
 #include "generateScene.h"
 #include "CImg.h"
 #include "../glm/glm.hpp"
@@ -9,9 +13,11 @@
 using namespace std;
 
 
-int maint() {
-
-}
+//int main() {
+//	readTextFile("sceneObject.txt");
+//	
+//
+//}
 
 void readTextFile(string fileName) {
 	ifstream readFile(fileName);
@@ -92,31 +98,32 @@ void createCameraPosition(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
+		cout << storing[counter] << endl;
 		counter++;
 	}
-
-	camera.setCamPosX(stod(storing[1]));
-	camera.setCamPosY(stod(storing[2]));
-	camera.setCamPosZ(stod(storing[3]));
+	double a = stod(storing[1]);
+	double b = stod(storing[2]);
+	double c = stod(result);
+	camera.posX = a;
+	camera.posY = b;
+	camera.posZ = c;
 }
 void createCameraFOV(string result){
 
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[2];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	camera.setFieldOfView(stod(storing[1]));
+	camera.fieldOfView = (stod(storing[1]));
 
 }
 void createCameraFocalLength(string result) {
@@ -124,14 +131,13 @@ void createCameraFocalLength(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	camera.setFocalLength(stod(storing[1]));
+	camera.fieldOfView = (stod(storing[1]));
 
 }
 void createCameraAspectRatio(string result) {
@@ -139,14 +145,13 @@ void createCameraAspectRatio(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	camera.setAspectRatio(stod(storing[1]));
+	camera.aspectRatio = (stod(storing[1]));
 
 }
 //Sphere Functions
@@ -155,16 +160,15 @@ void createSpherePosition(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	sphere.setSpherePosX(stod(storing[1]));
-	sphere.setSpherePosY(stod(storing[2]));
-	sphere.setSpherePosZ(stod(storing[3]));
+	sphere.posX = (stod(storing[1]));
+	sphere.posY = (stod(storing[2]));
+	sphere.posZ = (stod(storing[3]));
 
 }
 void createSphereRadius(string result) {
@@ -172,30 +176,28 @@ void createSphereRadius(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	sphere.setRadius(stod(storing[1]));
+	sphere.rad = (stod(storing[1]));
 }
 void createSphereAmbiant(string result) {
 
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	sphere.setAmb1(stod(storing[1]));
-	sphere.setAmb2(stod(storing[2]));
-	sphere.setAmb3(stod(storing[3]));
+	sphere.amb1 = (stod(storing[1]));
+	sphere.amb2 = (stod(storing[2]));
+	sphere.amb3 = (stod(storing[3]));
 
 }
 void createSphereDiffusion(string result) {
@@ -203,16 +205,15 @@ void createSphereDiffusion(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	sphere.setDif1(stod(storing[1]));
-	sphere.setDif2(stod(storing[2]));
-	sphere.setDif3(stod(storing[3]));
+	sphere.dif1 = (stod(storing[1]));
+	sphere.dif2 = (stod(storing[2]));
+	sphere.dif3 = (stod(storing[3]));
 
 }
 void createSphereSpecular(string result) {
@@ -220,16 +221,15 @@ void createSphereSpecular(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	sphere.setSpe1(stod(storing[1]));
-	sphere.setSpe2(stod(storing[2]));
-	sphere.setSpe3(stod(storing[3]));
+	sphere.spe1 = (stod(storing[1]));
+	sphere.spe2 = (stod(storing[2]));
+	sphere.spe3 =(stod(storing[3]));
 
 }
 void createSphereShininess(string result) {
@@ -237,14 +237,13 @@ void createSphereShininess(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	sphere.setShi(stod(storing[1]));
+	sphere.shi = (stod(storing[1]));
 	
 }
 //Light Functions
@@ -253,16 +252,15 @@ void createLightPosition(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	light.setLightPosX(stod(storing[1]));
-	light.setLightPosY(stod(storing[2]));
-	light.setLightPosZ(stod(storing[3]));
+	light.posX = (stod(storing[1]));
+	light.posY = (stod(storing[2]));
+	light.posZ = (stod(storing[3]));
 
 }
 void createLightColor(string result) {
@@ -270,16 +268,15 @@ void createLightColor(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	light.setColor1(stod(storing[1]));
-	light.setColor2(stod(storing[2]));
-	light.setColor3(stod(storing[3]));
+	light.col1 = (stod(storing[1]));
+	light.col2 = (stod(storing[2]));
+	light.col3 = (stod(storing[3]));
 }
 //Model Functions
 void createModelName(string result) {
@@ -287,30 +284,28 @@ void createModelName(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	model.setModelName(storing[0]);
+	model.modelFile = (storing[0]);
 }
 void createModelAmbiance(string result) {
 
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	model.setAmb1(stod(storing[1]));
-	model.setAmb2(stod(storing[2]));
-	model.setAmb3(stod(storing[3]));
+	model.amb1 = (stod(storing[1]));
+	model.amb2 = (stod(storing[2]));
+	model.amb3 = (stod(storing[3]));
 
 }
 void createModelDiffusion(string result) {
@@ -318,32 +313,30 @@ void createModelDiffusion(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	model.setDif1(stod(storing[1]));
-	model.setDif2(stod(storing[2]));
-	model.setDif3(stod(storing[3]));
+	model.dif1 = (stod(storing[1]));
+	model.dif2 = (stod(storing[2]));
+	model.dif3 = (stod(storing[3]));
 }
 void createModelSpecular(string result) {
 
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	model.setSpe1(stod(storing[1]));
-	model.setSpe2(stod(storing[2]));
-	model.setSpe3(stod(storing[3]));
+	model.spe1 = (stod(storing[1]));
+	model.spe2 = (stod(storing[2]));
+	model.spe3 = (stod(storing[3]));
 
 }
 void createModelShininess(string result) {
@@ -351,13 +344,12 @@ void createModelShininess(string result) {
 	string delimiter = " ";
 	int counter = 0;
 	size_t pos = 0;
-	string *storing;
-	storing = new string[];
+	string storing[4];
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing[counter] = result.substr(0, pos);
 		result.erase(0, pos + delimiter.length());
 		counter++;
 	}
-	model.setShi(stod(storing[1]));
+	model.shi = (stod(storing[1]));
 	
 }

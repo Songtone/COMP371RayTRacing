@@ -5,57 +5,57 @@
 
 class Light {
 public:
-	float posX, posY, posZ;
-	float col1, col2, col3, col4;
+	double posX, posY, posZ;
+	double col1, col2, col3;
 
 
-	void setLightPosX(float positionX) {
-		posX = positionX;
-	}
-	float getLightPosX() {
-		return posX;
-	}
-	void setLightPosY(float positionY) {
-		posY = positionY;
-	}
-	float getLightPosY() {
-		return posY;
-	}
-	void setLightPosZ(float positionZ) {
-		posZ = positionZ;
-	}
-	float getLightPosZ() {
-		return posZ;
-	}
-	void setColor1(float color1) {
-		col1 = color1;
-	}
-	float getColor1() {
-		return col1;
-	}
-	void setColor2(float color2) {
-		col2 = color2;
-	}
-	float getColor2() {
-		return col2;
-	}
-	void setColor3(float color3) {
-		col3 = color3;
-	}
-	float getColor3() {
-		return col3;
-	}
+	//void setLightPosX(double positionX) {
+	//	posX = positionX;
+	//}
+	//double getLightPosX() {
+	//	return posX;
+	//}
+	//void setLightPosY(double positionY) {
+	//	posY = positionY;
+	//}
+	//double getLightPosY() {
+	//	return posY;
+	//}
+	//void setLightPosZ(double positionZ) {
+	//	posZ = positionZ;
+	//}
+	//double getLightPosZ() {
+	//	return posZ;
+	//}
+	//void setColor1(double color1) {
+	//	col1 = color1;
+	//}
+	//double getColor1() {
+	//	return col1;
+	//}
+	//void setColor2(double color2) {
+	//	col2 = color2;
+	//}
+	//double getColor2() {
+	//	return col2;
+	//}
+	//void setColor3(double color3) {
+	//	col3 = color3;
+	//}
+	//double getColor3() {
+	//	return col3;
+	//}
 
-	Light() : posX(0), posY(0), posZ(0), col1(0), col2(0), col3(0) {}
-	Light(const Light& l) {
-		posX = l.posX;
-		posY = l.posY;
-		posZ = l.posZ;
-		col1 = l.col1;
-		col2 = l.col2;
-		col3 = l.col3;
+	//Light() : posX(0), posY(0), posZ(0), col1(0), col2(0), col3(0) {}
+	//Light(const Light& l) {
+	//	posX = l.posX;
+	//	posY = l.posY;
+	//	posZ = l.posZ;
+	//	col1 = l.col1;
+	//	col2 = l.col2;
+	//	col3 = l.col3;
 
-	}
+	//}
 };
 
 #endif
