@@ -12,6 +12,7 @@ Light light;
 Model model;
 
 void readTextFile(string fileName);
+void displayObjectsAttributes();
 
 void createCameraPosition(string result);
 void createCameraFOV(string result);

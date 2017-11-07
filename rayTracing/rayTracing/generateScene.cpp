@@ -13,11 +13,12 @@
 
 using namespace std;
 
-void displayObjectsAttributes();
+
 
 int main() {
 	readTextFile("sceneObject.txt");
 	displayObjectsAttributes();
+
 
 	system("pause");
 }
@@ -137,7 +138,7 @@ void createCameraFocalLength(string result) {
 		result.erase(0, pos + delimiter.length());
 
 	}
-	camera.fieldOfView = (stof(result));
+	camera.focalLength = (stof(result));
 
 }
 void createCameraAspectRatio(string result) {
@@ -352,8 +353,27 @@ void displayObjectsAttributes() {
 
 	cout << "Camera" << endl;
 	cout << "Position: "<< camera.camPos.x <<" "<< camera.camPos.y << " "<< camera.camPos.z << endl;
-	cout << "Camera" << endl;
-	cout << "Camera" << endl;
-
+	cout << "Field Of View: " << camera.fieldOfView << endl;
+	cout << "Focal Length: " << camera.focalLength << endl;
+	cout << "Aspect Ratio: " << camera.aspectRatio << endl;
+	cout << endl;
+	cout << "Sphere" << endl;
+	cout << "Position: "<< sphere.spherePos.x << " " << sphere.spherePos.y << " " << sphere.spherePos.z << endl;
+	cout << "Radius: " << sphere.rad << endl;
+	cout << "Ambiance: " << sphere.sphereAmb.x << " " << sphere.sphereAmb.y << " " << sphere.sphereAmb.z << endl;
+	cout << "Diffusion" << sphere.sphereDif.x << " " << sphere.sphereDif.y << " " << sphere.sphereDif.z << endl;
+	cout << "Specular: " << sphere.sphereSpe.x << " " << sphere.sphereSpe.y << " " << sphere.sphereSpe.z << endl;
+	cout << "Shininess: " << sphere.sphereShi << endl;
+	cout << endl;
+	cout << "Light" << endl;
+	cout << "Position: "<< light.lightPos.x << " " << light.lightPos.y << " " << light.lightPos.z << endl;
+	cout << "Color: " << light.lightColor.x << " " << light.lightColor.y << " " << light.lightColor.z << endl;
+	cout << endl;
+	cout << "Model" << endl;
+	cout << "Model Name: " << model.modelFile << endl;
+	cout << "Ambiance: " << model.modelAmb.x << " " << model.modelAmb.y << " " << model.modelAmb.z << endl;
+	cout << "Diffusion: " << model.modelDif.x << " " << model.modelDif.y << " " << model.modelDif.z << endl;
+	cout << "Specular: " << model.modelSpe.x << " " << model.modelSpe.y << " " << model.modelSpe.z << endl;
+	cout << "Shininess: " << model.modelShi << endl;
 
 }
