@@ -1,3 +1,5 @@
-﻿  generateScene.cpp
+﻿  main.cpp
+  generateScene.cpp
+  Generating Code...
   rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.exe
   rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.pdb (Partial PDB)

@@ -5,10 +5,12 @@
 #include "sphere.h"
 #include "light.h"
 #include "model.h"
+#include "triangle.h"
 
 Camera camera;
 Sphere sphere;
 Light light;
+Triangle triangle;
 Model model;
 
 void readTextFile(string fileName);
@@ -28,6 +30,14 @@ void createSphereShininess(string result);
 
 void createLightPosition(string result);
 void createLightColor(string result);
+
+void createTriangleV1(string result);
+void createTriangleV2(string result);
+void createTriangleV3(string result);
+void createTriangleAmbiance(string result);
+void createTriangleDiffusion(string result);
+void createTriangleSpecular(string result);
+void createTriangleShininess(string result);
 
 void createModelName(string result);
 void createModelAmbiance(string result);

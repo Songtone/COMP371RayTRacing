@@ -3,10 +3,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "camera.h"
-#include "sphere.h"
-#include "light.h"
-#include "model.h"
 #include "generateScene.h"
 #include "CImg.h"
 #include "../glm/glm.hpp"
