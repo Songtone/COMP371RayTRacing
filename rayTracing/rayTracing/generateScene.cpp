@@ -6,25 +6,55 @@
 #include "generateScene.h"
 #include "CImg.h"
 #include "../glm/glm.hpp"
+//used this website to learn about ray tracing https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays
 
 using namespace std;
+using namespace cimg_library;
 
+//variables
+glm::vec3 rayDirection;
+float pi = 3.1415965;
+float height;
+float width;
+float camPixelX;
+float camPixelY;
 
 
 int main() {
 	readTextFile("sceneObject.txt");
 	displayObjectsAttributes();
 
+	height = 2 * (camera.focalLength*glm::tan(glm::radians(camera.fieldOfView) / 2));
+	width = camera.aspectRatio*height;
+	CImg<float> picture(width, height, 1, 3, 0);
+		
+		//starting rayTracing
+	for (int i = 0; i < height; i++) {//for the height of the image, we will go through every pixel in that width. then go to the next height
+		for (int j = 0; j < width; j++) {
+
+			camPixelX = (2 * ((j + 0.5) / width) - 1)*tan(camera.fieldOfView / 2 * pi / 180)*camera.aspectRatio;
+			camPixelY = (1 - 2 * ((i + 0.5) / height))*tan(camera.fieldOfView / 2 * pi / 180);
+
+			rayDirection = glm::vec3(camPixelX, camPixelY, -1) - camera.camPos;
+			rayDirection = glm::normalize(rayDirection);
+		}
+	}
+	
+
+	//display the scene window
+	CImgDisplay sceneDisp(picture, "Current Scene");
+	picture.normalize(0, 255);
+	
 
 	system("pause");
 }
 
-void readTextFile(string fileName) {
+void readTextFile(string fileName) {//reading and storing all the attribute information for each individual objects.
 	ifstream readFile(fileName);
 	string line;
 
 	while (getline(readFile, line)) {
-		if (line == "camera") {//getting settings for the camera
+		if (line == "camera") {
 
 			getline(readFile, line);
 			createCameraPosition(line);
@@ -72,6 +102,23 @@ void readTextFile(string fileName) {
 			createModelSpecular(line);
 			getline(readFile, line);
 			createModelShininess(line);
+
+		}
+		else if (line == "triangle") {
+			getline(readFile, line);
+			createTriangleV1(line);
+			getline(readFile, line);
+			createTriangleV2(line);
+			getline(readFile, line);
+			createTriangleV3(line);
+			getline(readFile, line);
+			createTriangleAmbiance(line);
+			getline(readFile, line);
+			createTriangleDiffusion(line);
+			getline(readFile, line);
+			createTriangleSpecular(line);
+			getline(readFile, line);
+			createTriangleShininess(line);
 
 		}
 	}
@@ -345,6 +392,102 @@ void createModelShininess(string result) {
 	model.modelShi = (stof(result));
 	
 }
+void createTriangleV1(string result) {
+
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	triangle.triV1 = glm::vec3(a, b, c);
+}
+void createTriangleV2(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	triangle.triV2 = glm::vec3(a, b, c);
+}
+void createTriangleV3(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	triangle.triV3 = glm::vec3(a, b, c);
+}
+void createTriangleAmbiance(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	triangle.triAmb = glm::vec3(a, b, c);
+}
+void createTriangleDiffusion(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	triangle.triDif = glm::vec3(a, b, c);
+}
+void createTriangleSpecular(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	triangle.triSpe = glm::vec3(a, b, c);
+}
+void createTriangleShininess(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	triangle.triShi = (stof(result));
+}
 void displayObjectsAttributes() {
 
 	cout << "Camera" << endl;
@@ -371,5 +514,14 @@ void displayObjectsAttributes() {
 	cout << "Diffusion: " << model.modelDif.x << " " << model.modelDif.y << " " << model.modelDif.z << endl;
 	cout << "Specular: " << model.modelSpe.x << " " << model.modelSpe.y << " " << model.modelSpe.z << endl;
 	cout << "Shininess: " << model.modelShi << endl;
+	cout << endl;
+	cout << "Triangle" << endl;
+	cout << "V1 coord: " << triangle.triV1.x << " " << triangle.triV1.y << " " << triangle.triV1.z << endl;
+	cout << "V2 coord: " << triangle.triV2.x << " " << triangle.triV2.y << " " << triangle.triV2.z << endl;
+	cout << "V3 coord: " << triangle.triV3.x << " " << triangle.triV3.y << " " << triangle.triV3.z << endl;
+	cout << "Ambiance: " << triangle.triAmb.x << " " << triangle.triAmb.y << " " << triangle.triAmb.z << endl;
+	cout << "Diffusion: " << triangle.triDif.x << " " << triangle.triDif.y << " " << triangle.triDif.z << endl;
+	cout << "Specular: " << triangle.triSpe.x << " " << triangle.triSpe.y << " " << triangle.triSpe.z << endl;
+	cout << "Shininess: " << triangle.triShi << endl;
 
 }

@@ -67,143 +67,276 @@
 //	system("pause");
 //}
 
-
-#include <cmath>
-#include <iostream>
-#include <fstream>
-#include "CImg.h"
-
-using namespace std;
-using namespace cimg_library;
-
-//creating vectors
-struct Vec3 {
-	double x, y, z;
-	Vec3(double x, double y, double z) : x(x), y(y), z(z) {}
-
-	//operators to simplify vector math
-	Vec3 operator + (const Vec3& v) const {
-		return Vec3(x + v.x, y + v.y, z + v.z);
-	}
-	Vec3 operator - (const Vec3& v) const {
-		return Vec3(x - v.x, y - v.y, z - v.z);
-	}
-	Vec3 operator * (double d) const {
-		return Vec3(x*d, y*d, z*d);
-	}
-	Vec3 operator / (double d) const {
-		return Vec3(x / d, y / d, z / d);
-	}
-
-	//getting normals
-	Vec3 normalize() const {
-		double mg = sqrt(x*x + y*y + z*z);
-		return Vec3(x / mg, y / mg, z / mg);
-	}
-
-};
-
-//dot-product of 2 vectors
-inline double dot(const Vec3& a, const Vec3& b) {
-	return (a.x*b.x + a.y*b.y + a.z*b.z);
-}
-
-//rays for ray-tracing
-struct Ray {
-	Vec3 o, d;
-	Ray(const Vec3& o, const Vec3& d) : o(o), d(d) {}
-};
-
-//building sphere object
-struct Sphere {
-	Vec3 c;
-	double r;
-	Sphere(const Vec3& c, double r) : c(c), r(r) {}
-
-	Vec3 getNormal(const Vec3& pi) const {
-		return (pi - c) / r;
-	}
-
-	bool intersect(const Ray& ray, double &t) const {
-		const Vec3 o = ray.o;
-		const Vec3 d = ray.d;
-		const Vec3 oc = o - c;
-		const double b = 2 * dot(oc, d);
-		const double c = dot(oc, oc) - r*r;
-		double disc = b*b - 4 * c;
-		if (disc < 1e-4) return false;
-		disc = sqrt(disc);
-		const double t0 = -b - disc;
-		const double t1 = -b + disc;
-		if (t0 < t1) {
-			t = t0;
-		}
-		else {
-			t = t1;
-		}
-		return true;
-	}
-};
-
-
-void clamp255(Vec3& col) {
-	if (col.x > 255) col.x = 255;
-	if (col.x < 0) col.x = 0;
-	if (col.y > 255) col.y = 255;
-	if (col.y < 0) col.y = 0;
-	if (col.z > 255) col.z = 255;
-	if (col.z < 0) col.z = 0;
-}
+//
+//#include "stdafx.h"
+//
+//#include <stdio.h>
+//#include <iostream>
+//#include <string>
+//#include <fstream>
+//#include "..\glm\glm.hpp"
+//#include <random>
+//#include <functional>
+//#include <vector>
+//
+//#include "CImg.h"
+//
+//using namespace cimg_library;
+//using namespace std;
+//
+//int NumOfObjects;
+//
+//
+////Camera temp Stuff
+//glm::vec3 cameraPosition;
+//float FOV;
+//float focal_lenght;
+//float aspect_ratio;
+//
+////Sphere temp Stuff
+//glm::vec3 spherePosition;
+//float rad;
+//glm::vec3 sphereAmbiantColor;
+//glm::vec3 sphereDiffuseColor;
+//glm::vec3 sphereSpectColor;
+//float sphereShine;
+//
+////Light temp stuff
+//glm::vec3 lightPosition;
+//glm::vec3 lightColor;
+//
+////HeightMap temp stuff
+//string name;
+//glm::vec3 mapAmbiantColor;
+//glm::vec3 mapDiffuseColor;
+//glm::vec3 mapSpectColor;
+//float mapShine;
+//
+//
+//struct Camera
+//{
+//	glm::vec3 cameraPosition;
+//	float FOV;
+//	float focal_lenght;
+//	float aspect_ratio;
+//	Camera() {}
+//	Camera(glm::vec3 cp, float fov, float fl, float ar) : cameraPosition(cp), FOV(fov), focal_lenght(fl), aspect_ratio(ar) {}
+//};
+//
+//struct Light
+//{
+//	glm::vec3 lightPosition;
+//	glm::vec3 lightColor;
+//
+//	Light(glm::vec3 lp, glm::vec3 lc) : lightPosition(lp), lightColor(lc) {}
+//};
+//
+//inline double dot(const glm::vec3& a, const glm::vec3& b) {
+//	return (a.x*b.x + a.y*b.y + a.z*b.z);
+//}
+//
+//struct Ray {
+//	glm::vec3 o, d;
+//	Ray(const glm::vec3& o, const glm::vec3& d) : o(o), d(d) {}
+//};
+//
+//struct Sphere {
+//	glm::vec3 spherePosition;
+//	float rad;
+//	glm::vec3 sphereAmbiantColor;
+//	glm::vec3 sphereDiffuseColor;
+//	glm::vec3 sphereSpectColor;
+//	float sphereShine;
+//
+//	Sphere(glm::vec3 sp, float r, glm::vec3 sa, glm::vec3 sd, glm::vec3 ssc, float ss)
+//		: spherePosition(sp), rad(r), sphereAmbiantColor(sa), sphereDiffuseColor(sd), sphereSpectColor(ssc), sphereShine(ss) {}
+//
+//	glm::vec3 getNormal(const glm::vec3& pi) const { return (pi - spherePosition) / rad; }
+//
+//	bool intersect(const Ray& ray, double &t) const
+//	{
+//		const glm::vec3 o = ray.o;
+//		const glm::vec3 d = ray.d;
+//		const glm::vec3 oc = o - spherePosition;
+//		const double b = 2 * dot(oc, d);
+//		const double c = dot(oc, oc) - rad*rad;
+//		double disc = b*b - 4 * c;
+//		if (disc < 1e-4) return false;
+//		disc = sqrt(disc);
+//		const double t0 = -b - disc;
+//		const double t1 = -b + disc;
+//		t = (t0 < t1) ? t0 : t1;
+//		return true;
+//	}
+//};
+//
+//void clamp255(glm::vec3& col) {
+//	col.x = (col.x > 255) ? 255 : (col.x < 0) ? 0 : col.x;
+//	col.y = (col.y > 255) ? 255 : (col.y < 0) ? 0 : col.y;
+//	col.z = (col.z > 255) ? 255 : (col.z < 0) ? 0 : col.z;
+//}
+//
+//glm::vec3 normalize(glm::vec3 VEC)
+//{
+//	double mg = sqrt(VEC.x*VEC.x + VEC.y*VEC.y + VEC.z*VEC.z);
+//	return glm::vec3(VEC.x / mg, VEC.y / mg, VEC.z / mg);
+//}
+//
+//glm::vec3 powerUpColor(glm::vec3 Original)
+//{
+//	return glm::vec3(Original.r * 255, Original.g * 255, Original.b * 255);
+//}
 
 //int main()
 //{
+//	vector<Sphere> spheres;
+//	vector<Light> lights;
+//	Camera camera;
+//
+//	//File realated stuff
+//#pragma region
+//	ifstream inFile;
+//	inFile.open("sceneObject.txt");
+//	if (!inFile)
+//	{
+//		cerr << "Unable to open file datafile.txt";
+//		exit(1);
+//	}
+//
+//	string type;
+//	string garbage;
+//	inFile >> NumOfObjects;
+//
+//	while (inFile.good())
+//	{
+//		inFile >> type;
+//		if (type == "camera")
+//		{
+//			inFile >> garbage;
+//			inFile >> cameraPosition.x;
+//			inFile >> cameraPosition.y;
+//			inFile >> cameraPosition.z;
+//			inFile >> garbage;
+//			inFile >> FOV;
+//			inFile >> garbage;
+//			inFile >> focal_lenght;
+//			inFile >> garbage;
+//			inFile >> aspect_ratio;
+//			camera = Camera(cameraPosition, FOV, focal_lenght, aspect_ratio);
+//		}
+//		if (type == "sphere")
+//		{
+//			inFile >> garbage;
+//			inFile >> spherePosition.x;
+//			inFile >> spherePosition.y;
+//			inFile >> spherePosition.z;
+//			inFile >> garbage;
+//			inFile >> rad;
+//			inFile >> garbage;
+//			inFile >> sphereAmbiantColor.x;
+//			inFile >> sphereAmbiantColor.y;
+//			inFile >> sphereAmbiantColor.z;
+//			inFile >> garbage;
+//			inFile >> sphereDiffuseColor.x;
+//			inFile >> sphereDiffuseColor.y;
+//			inFile >> sphereDiffuseColor.z;
+//			inFile >> garbage;
+//			inFile >> sphereSpectColor.x;
+//			inFile >> sphereSpectColor.y;
+//			inFile >> sphereSpectColor.z;
+//			inFile >> garbage;
+//			inFile >> sphereShine;
+//			spheres.push_back(Sphere(spherePosition, rad, sphereAmbiantColor, sphereDiffuseColor, sphereSpectColor, sphereShine));
+//		}
+//		if (type == "light")
+//		{
+//			inFile >> garbage;
+//			inFile >> lightPosition.x;
+//			inFile >> lightPosition.y;
+//			inFile >> lightPosition.z;
+//			inFile >> garbage;
+//			inFile >> lightColor.x;
+//			inFile >> lightColor.y;
+//			inFile >> lightColor.z;
+//			lights.push_back(Light(lightPosition, lightColor));
+//		}
+//		if (type == "model")
+//		{
+//			inFile >> name;
+//			inFile >> garbage;
+//			inFile >> mapAmbiantColor.x;
+//			inFile >> mapAmbiantColor.y;
+//			inFile >> mapAmbiantColor.z;
+//			inFile >> garbage;
+//			inFile >> mapDiffuseColor.x;
+//			inFile >> mapDiffuseColor.y;
+//			inFile >> mapDiffuseColor.z;
+//			inFile >> garbage;
+//			inFile >> mapSpectColor.x;
+//			inFile >> mapSpectColor.y;
+//			inFile >> mapSpectColor.z;
+//			inFile >> garbage;
+//			inFile >> mapShine;
+//		}
+//	}
+//	inFile.close();
+//#pragma endregion
+//
+//
+//
 //	const int H = 500;
 //	const int W = 500;
 //
-//	const Vec3 white(255, 255, 255);
-//	const Vec3 black(0, 0, 0);
-//	const Vec3 red(255, 0, 0);
+//	const glm::vec3 white(255, 255, 255);
+//	const glm::vec3 black(0, 0, 0);
 //
-//	const Sphere sphere(Vec3(W*0.5, H*0.5, 50), 50);
-//	const Sphere sphere2(Vec3(W*0.5, H*0.5, 100), 100);
-//	const Sphere light(Vec3(0, 0, 50), 1);
 //
 //	//Creates an image with three channels and sets it to black
 //	cimg_library::CImg<float> image(H, W, 1, 3, 0);
 //
-//	//Compute the color of each pixel and assign it
+//	//Compute the color of each pixel and assign it …
+//
 //	double t;
-//	Vec3 pix_col(black);
+//	glm::vec3 pixelColor(black);
 //
-//	for (int y = 0; y < H; y++) {
-//		for (int x = 0; x < W; x++) {
-//			pix_col = black;
-//
-//			const Ray ray(Vec3(x, y, 0), Vec3(0, 0, 1));
-//
-//			if (sphere.intersect(ray, t)) {
-//				const Vec3 rayVec = ray.o + ray.d*t;
-//				const Vec3 L = light.c - rayVec;
-//				const Vec3 N = sphere2.getNormal(rayVec);
-//				const double dt = dot(L.normalize(), N.normalize());
+//	for (int y = 0; y < H; ++y)
+//	{
+//		for (int x = 0; x < W; ++x)						//For all pixels to display
+//		{
+//			pixelColor = black;							// put all pixels black them black
+//			const Ray ray(glm::vec3(x, y, 0), glm::vec3(0, 0, 1)); // Cast a ray
+//			for (int s = 0; s < spheres.size(); s++)
+//			{
+//				for (int l = 0; l < lights.size(); l++)
+//				{
+//					if (spheres[s].intersect(ray, t))				//If the ray intersects the sphere
+//					{
+//						glm::vec3 pi = ray.o + glm::vec3(ray.d.x*t, ray.d.y*t, ray.d.z*t);
+//						glm::vec3 L = lights[l].lightPosition - pi;
+//						glm::vec3 N = spheres[s].getNormal(pi);
+//						L = normalize(L);
+//						N = normalize(N);
+//						const double dt = dot(L, N);
+//						pixelColor = glm::vec3(white.x * dt, white.y * dt, white.z * dt);
+//						pixelColor = pixelColor + powerUpColor(spheres[s].sphereAmbiantColor);
+//						clamp255(pixelColor);					//max out color
+//					}
+//					image(x, y, 0) = pixelColor.r;//map Calculated pixel to output (image)
+//					image(x, y, 1) = pixelColor.g;//map Calculated pixel to output (image)
+//					image(x, y, 2) = pixelColor.b;//map Calculated pixel to output (image)
+//				}
 //			}
 //
-//			if (sphere2.intersect(ray, t)) {
-//				const Vec3 rayVec = ray.o + ray.d*t;
-//				const Vec3 L = light.c - rayVec;
-//				const Vec3 N = sphere2.getNormal(rayVec);
-//				const double dt = dot(L.normalize(), N.normalize());
 //
-//				pix_col = (red + white*dt) * 0.5;
-//				clamp255(pix_col);
-//			}
-//
-//			image(x, y) = pix_col.x, pix_col.y;
 //		}
 //	}
-//	image.save("render.bmp");
 //
+//
+//	//Save out the image in BMP format. Pixel values must be in the range [0,255]
+//	image.save("render.bmp");
+//	//Display the rendered image on screen
 //	cimg_library::CImgDisplay main_disp(image, "Render");
+//
 //	while (!main_disp.is_closed())
 //		main_disp.wait();
 //}

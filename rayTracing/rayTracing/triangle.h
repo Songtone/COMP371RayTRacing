@@ -10,9 +10,9 @@ using namespace std;
 class Triangle {
 public:
 
-	glm::vec3 v1;
-	glm::vec3 v2;
-	glm::vec3 v3;
+	glm::vec3 triV1;
+	glm::vec3 triV2;
+	glm::vec3 triV3;
 	glm::vec3 triAmb;
 	glm::vec3 triDif;
 	glm::vec3 triSpe;

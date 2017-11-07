@@ -1,5 +1,58 @@
-﻿  main.cpp
-  generateScene.cpp
-  Generating Code...
-  rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.exe
-  rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.pdb (Partial PDB)
+﻿  generateScene.cpp
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(29): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(51): error C2601: 'readTextFile': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(143): error C2601: 'createCameraPosition': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(160): error C2601: 'createCameraFOV': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(173): error C2601: 'createCameraFocalLength': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(186): error C2601: 'createCameraAspectRatio': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(200): error C2601: 'createSpherePosition': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(216): error C2601: 'createSphereRadius': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(228): error C2601: 'createSphereAmbiant': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(244): error C2601: 'createSphereDiffusion': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(260): error C2601: 'createSphereSpecular': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(276): error C2601: 'createSphereShininess': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(290): error C2601: 'createLightPosition': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(306): error C2601: 'createLightColor': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(322): error C2601: 'createModelName': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(334): error C2601: 'createModelAmbiance': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(350): error C2601: 'createModelDiffusion': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(365): error C2601: 'createModelSpecular': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(381): error C2601: 'createModelShininess': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(394): error C2601: 'createTriangleV1': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(409): error C2601: 'createTriangleV2': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(423): error C2601: 'createTriangleV3': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(437): error C2601: 'createTriangleAmbiance': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(451): error C2601: 'createTriangleDiffusion': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(465): error C2601: 'createTriangleSpecular': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(479): error C2601: 'createTriangleShininess': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(490): error C2601: 'displayObjectsAttributes': local function definitions are illegal
+  c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): note: this line contains a '{' which has not yet been matched
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(32): fatal error C1075: the left brace '{' was unmatched at the end of the file

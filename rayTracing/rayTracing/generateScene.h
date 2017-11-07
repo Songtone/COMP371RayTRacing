@@ -7,6 +7,7 @@
 #include "model.h"
 #include "triangle.h"
 
+
 Camera camera;
 Sphere sphere;
 Light light;
