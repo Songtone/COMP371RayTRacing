@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "camera.h"
 #include "sphere.h"
 #include "light.h"
@@ -12,12 +13,14 @@
 
 using namespace std;
 
+void displayObjectsAttributes();
 
-//int main() {
-//	readTextFile("sceneObject.txt");
-//	
-//
-//}
+int main() {
+	readTextFile("sceneObject.txt");
+	displayObjectsAttributes();
+
+	system("pause");
+}
 
 void readTextFile(string fileName) {
 	ifstream readFile(fileName);
@@ -76,6 +79,7 @@ void readTextFile(string fileName) {
 		}
 	}
 	readFile.close();
+	
 }
 //string splitting(string s, string delimiter) {
 //	int counter = 0;
@@ -96,260 +100,260 @@ void readTextFile(string fileName) {
 void createCameraPosition(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
+	
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		cout << storing[counter] << endl;
-		counter++;
+	
 	}
-	double a = stod(storing[1]);
-	double b = stod(storing[2]);
-	double c = stod(result);
-	camera.posX = a;
-	camera.posY = b;
-	camera.posZ = c;
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	camera.camPos = glm::vec3(a, b, c);
+	
 }
 void createCameraFOV(string result){
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[2];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	camera.fieldOfView = (stod(storing[1]));
+	camera.fieldOfView = (stof(result));
 
 }
 void createCameraFocalLength(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	camera.fieldOfView = (stod(storing[1]));
+	camera.fieldOfView = (stof(result));
 
 }
 void createCameraAspectRatio(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	camera.aspectRatio = (stod(storing[1]));
+	camera.aspectRatio = (stof(result));
 
 }
 //Sphere Functions
 void createSpherePosition(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	sphere.posX = (stod(storing[1]));
-	sphere.posY = (stod(storing[2]));
-	sphere.posZ = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	sphere.spherePos = glm::vec3(a, b, c);
 
 }
 void createSphereRadius(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	sphere.rad = (stod(storing[1]));
+	sphere.rad = (stof(result));
 }
 void createSphereAmbiant(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	sphere.amb1 = (stod(storing[1]));
-	sphere.amb2 = (stod(storing[2]));
-	sphere.amb3 = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	sphere.sphereAmb = glm::vec3(a, b, c);
 
 }
 void createSphereDiffusion(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	sphere.dif1 = (stod(storing[1]));
-	sphere.dif2 = (stod(storing[2]));
-	sphere.dif3 = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	sphere.sphereDif = glm::vec3(a, b, c);
 
 }
 void createSphereSpecular(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	sphere.spe1 = (stod(storing[1]));
-	sphere.spe2 = (stod(storing[2]));
-	sphere.spe3 =(stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	sphere.sphereSpe = glm::vec3(a, b, c);
 
 }
 void createSphereShininess(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	sphere.shi = (stod(storing[1]));
+	sphere.sphereShi = (stof(result));
 	
 }
 //Light Functions
 void createLightPosition(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	light.posX = (stod(storing[1]));
-	light.posY = (stod(storing[2]));
-	light.posZ = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	light.lightPos = glm::vec3(a, b, c);
 
 }
 void createLightColor(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	light.col1 = (stod(storing[1]));
-	light.col2 = (stod(storing[2]));
-	light.col3 = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	light.lightColor = glm::vec3(a, b, c);
 }
 //Model Functions
 void createModelName(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	model.modelFile = (storing[0]);
+	model.modelFile = (result);
 }
 void createModelAmbiance(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	model.amb1 = (stod(storing[1]));
-	model.amb2 = (stod(storing[2]));
-	model.amb3 = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	model.modelAmb = glm::vec3(a, b, c);
 
 }
 void createModelDiffusion(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	model.dif1 = (stod(storing[1]));
-	model.dif2 = (stod(storing[2]));
-	model.dif3 = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	model.modelDif = glm::vec3(a, b, c);
 }
 void createModelSpecular(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	model.spe1 = (stod(storing[1]));
-	model.spe2 = (stod(storing[2]));
-	model.spe3 = (stod(storing[3]));
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	model.modelSpe = glm::vec3(a, b, c);
 
 }
 void createModelShininess(string result) {
 
 	string delimiter = " ";
-	int counter = 0;
 	size_t pos = 0;
-	string storing[4];
+	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
-		storing[counter] = result.substr(0, pos);
+		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-		counter++;
+
 	}
-	model.shi = (stod(storing[1]));
+	model.modelShi = (stof(result));
 	
+}
+void displayObjectsAttributes() {
+
+	cout << "Camera" << endl;
+	cout << "Position: "<< camera.camPos.x <<" "<< camera.camPos.y << " "<< camera.camPos.z << endl;
+	cout << "Camera" << endl;
+	cout << "Camera" << endl;
+
+
 }

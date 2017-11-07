@@ -2,17 +2,24 @@
 #define CAMERA_H
 
 #include <iostream>
+#include "..\glm\glm.hpp"
 
 
 using namespace std;
 
 class Camera {
 public:
-	double posX, posY, posZ;
+
+	glm::vec3 camPos;
+	float fieldOfView;
+	float focalLength;
+	float aspectRatio;
+	
+	/*double posX, posY, posZ;
 	double fieldOfView;
 	double focalLength;
 	double aspectRatio;
-
+*/
 	/*void setCamPosX(double positionX) {
 		posX = positionX;
 	}

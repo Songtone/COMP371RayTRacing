@@ -2,17 +2,26 @@
 #define SPHERE_H
 
 #include <iostream>
+#include "..\glm\glm.hpp"
 
 using namespace std;
 
 class Sphere {
 public:
-	double posX, posY, posZ;
+
+	glm::vec3 spherePos;
+	float rad;
+	glm::vec3 sphereAmb;
+	glm::vec3 sphereDif;
+	glm::vec3 sphereSpe;
+	float sphereShi;
+
+	/*double posX, posY, posZ;
 	double rad;
 	double amb1, amb2, amb3;
 	double dif1, dif2, dif3;
 	double spe1, spe2, spe3;
-	double shi;
+	double shi;*/
 
 	/*void setSpherePosX(double positionX) {
 		posX = positionX;

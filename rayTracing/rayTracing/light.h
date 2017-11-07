@@ -2,11 +2,16 @@
 #define LIGHT_H
 
 #include <iostream>
+#include "..\glm\glm.hpp"
 
 class Light {
 public:
-	double posX, posY, posZ;
-	double col1, col2, col3;
+
+	glm::vec3 lightPos;
+	glm::vec3 lightColor;
+
+	/*double posX, posY, posZ;
+	double col1, col2, col3;*/
 
 
 	//void setLightPosX(double positionX) {

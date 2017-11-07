@@ -1,7 +1,3 @@
-﻿  main.cpp
-c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\main.cpp(12): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\main.cpp(48): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\main.cpp(49): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\main.cpp(56): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+﻿  generateScene.cpp
   rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.exe
   rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.pdb (Partial PDB)

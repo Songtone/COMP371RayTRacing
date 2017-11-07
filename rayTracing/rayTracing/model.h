@@ -2,17 +2,23 @@
 #define MODEL_H
 
 #include <iostream>
+#include "..\glm\glm.hpp"
 
 using namespace std;
 
 class Model {
 public:
 	string modelFile;
-	double amb1, amb2, amb3;
+	glm::vec3 modelAmb;
+	glm::vec3 modelDif;
+	glm::vec3 modelSpe;
+	float modelShi;
+
+	/*double amb1, amb2, amb3;
 	double dif1, dif2, dif3;
 	double spe1, spe2, spe3;
 	double shi;
-
+*/
 	/*void setModelName(string name) {
 		modelFile = name;
 	}
