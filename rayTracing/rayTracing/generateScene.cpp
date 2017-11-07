@@ -396,16 +396,16 @@ void createTriangleV1(string result) {
 
 	string delimiter = " ";
 	size_t pos = 0;
-	std::vector<string> storing;
-	while ((pos = result.find(delimiter)) != string::npos) {
-		storing.emplace_back(result.substr(0, pos));
-		result.erase(0, pos + delimiter.length());
+std::vector<string> storing;
+while ((pos = result.find(delimiter)) != string::npos) {
+	storing.emplace_back(result.substr(0, pos));
+	result.erase(0, pos + delimiter.length());
 
-	}
-	float a = stof(storing[1]);
-	float b = stof(storing[2]);
-	float c = stof(result);
-	triangle.triV1 = glm::vec3(a, b, c);
+}
+float a = stof(storing[1]);
+float b = stof(storing[2]);
+float c = stof(result);
+triangle.triV1 = glm::vec3(a, b, c);
 }
 void createTriangleV2(string result) {
 	string delimiter = " ";
@@ -488,6 +488,37 @@ void createTriangleShininess(string result) {
 	}
 	triangle.triShi = (stof(result));
 }
+//reference https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
+bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersectPoint, float &d) {
+	float rad2 = radians * radians;
+	float r0, r1;
+	glm::vec3 L = spherePos - camPos;
+	float rca = glm::dot(L, rayDir);
+
+	float d2 = glm::dot(L, L) - rca * rca;
+	if (d2 > rad2)
+	{
+	return false;
+	}
+	float thc = sqrt((rad2 - d2));
+	r0 = rca - thc;
+	r1 = rca + thc;
+
+	if (r0 > r1) swap(r0, r1);
+
+	if (r0 < 0) {
+		r0 = r1;
+		if (r0 < 0) {
+			return false;
+		}
+	}
+	d = r0;
+	intersectPoint = camPos + rayDir *d;
+	return true;
+
+}
+//reference for triangle https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
+
 void displayObjectsAttributes() {
 
 	cout << "Camera" << endl;

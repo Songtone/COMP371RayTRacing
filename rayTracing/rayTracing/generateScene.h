@@ -14,6 +14,8 @@ Light light;
 Triangle triangle;
 Model model;
 
+bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 ray, float radians, glm::vec3& intersectPoint, float &distance);
+
 void readTextFile(string fileName);
 void displayObjectsAttributes();
 
