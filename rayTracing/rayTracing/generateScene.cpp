@@ -489,10 +489,10 @@ void createTriangleShininess(string result) {
 	triangle.triShi = (stof(result));
 }
 //reference https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
-bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersectPoint, float &d) {
+bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 rayDir, float radians, float &d) {
 	float rad2 = radians * radians;
 	float r0, r1;
-	glm::vec3 L = spherePos - camPos;
+	glm::vec3 L = objectPos - camPos;
 	float rca = glm::dot(L, rayDir);
 
 	float d2 = glm::dot(L, L) - rca * rca;
@@ -513,7 +513,7 @@ bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir,
 		}
 	}
 	d = r0;
-	intersectPoint = camPos + rayDir *d;
+	
 	return true;
 
 }
