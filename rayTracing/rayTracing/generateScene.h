@@ -6,15 +6,24 @@
 #include "light.h"
 #include "model.h"
 #include "triangle.h"
+#include <vector>
+
+using namespace std;
 
 
 Camera camera;
-Sphere sphere;
-Light light;
-Triangle triangle;
-Model model;
+vector <Sphere> spheres;
+vector <Light> lights;
+vector <Triangle> triangles;
+vector <Model> models;
+glm::vec3 tempSpherePos;
+float tempSphereRad;
+glm::vec3 tempSphereDif;
+glm::vec3 tempSphereAmb;
+glm::vec3 tempSphereSpe;
+float tempSphereShi;
 
-bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 ray, float radians, float &distance);
+bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 ray, float radians,glm::vec3& intersection, float &distance);
 
 void readTextFile(string fileName);
 void displayObjectsAttributes();

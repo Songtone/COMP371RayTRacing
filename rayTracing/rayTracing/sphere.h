@@ -7,14 +7,17 @@
 using namespace std;
 
 class Sphere {
+	
 public:
-
+	Sphere(glm::vec3 p, float r, glm::vec3 a, glm::vec3 d, glm::vec3 s, float sh);
 	glm::vec3 spherePos;
 	float rad;
 	glm::vec3 sphereAmb;
 	glm::vec3 sphereDif;
 	glm::vec3 sphereSpe;
 	float sphereShi;
+
+
 
 	/*double posX, posY, posZ;
 	double rad;

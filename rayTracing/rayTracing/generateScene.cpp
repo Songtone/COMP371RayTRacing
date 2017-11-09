@@ -14,14 +14,14 @@ using namespace cimg_library;
 //variables
 glm::vec3 rayDirection;
 float pi = 3.1415965;
-float height;
-float width;
+int height;
+int width;
 float camPixelX;
 float camPixelY;
 
 
 int main() {
-	readTextFile("sceneObject.txt");
+	readTextFile("..\\scene_files\\sceneOBJ.txt");
 	displayObjectsAttributes();
 
 	height = 2 * (camera.focalLength*glm::tan(glm::radians(camera.fieldOfView) / 2));
@@ -37,6 +37,20 @@ int main() {
 
 			rayDirection = glm::vec3(camPixelX, camPixelY, -1) - camera.camPos;
 			rayDirection = glm::normalize(rayDirection);
+			glm::vec3 colorPixel(0.0f);
+			
+			float tempDist;
+			float distance;
+			glm::vec3 tempIntersect;
+			glm::vec3 intersect;
+			for (int i = 0; i < spheres.size(); i++) {
+
+				if (sphereIntersection(spheres[i].spherePos, camera.camPos, rayDirection, spheres[i].rad, tempIntersect, tempDist)) {
+					colorPixel = spheres[i].sphereAmb;
+				}
+				float color[3]{ colorPixel.x,colorPixel.y,colorPixel.z };
+				picture.draw_point(j, i, color);
+			}
 		}
 	}
 	
@@ -45,6 +59,7 @@ int main() {
 	CImgDisplay sceneDisp(picture, "Current Scene");
 	picture.normalize(0, 255);
 	
+	picture.save("dandaman.bmp");
 
 	system("pause");
 }
@@ -80,6 +95,10 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 			createSphereSpecular(line);
 			getline(readFile, line);
 			createSphereShininess(line);
+
+			Sphere newSphere(tempSpherePos,tempSphereRad,tempSphereAmb,tempSphereDif,tempSphereSpe,tempSphereShi);
+			spheres.emplace_back(newSphere);
+
 
 		}
 		else if (line == "light") {
@@ -211,7 +230,7 @@ void createSpherePosition(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	sphere.spherePos = glm::vec3(a, b, c);
+	glm::vec3 tempSpherePos = glm::vec3(a, b, c);
 
 }
 void createSphereRadius(string result) {
@@ -224,7 +243,7 @@ void createSphereRadius(string result) {
 		result.erase(0, pos + delimiter.length());
 
 	}
-	sphere.rad = (stof(result));
+	float tempSphereRad = (stof(result));
 }
 void createSphereAmbiant(string result) {
 
@@ -239,7 +258,7 @@ void createSphereAmbiant(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	sphere.sphereAmb = glm::vec3(a, b, c);
+	glm::vec3 tempSphereAmb = glm::vec3(a, b, c);
 
 }
 void createSphereDiffusion(string result) {
@@ -255,7 +274,7 @@ void createSphereDiffusion(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	sphere.sphereDif = glm::vec3(a, b, c);
+	glm::vec3 tempSphereDif = glm::vec3(a, b, c);
 
 }
 void createSphereSpecular(string result) {
@@ -271,7 +290,7 @@ void createSphereSpecular(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	sphere.sphereSpe = glm::vec3(a, b, c);
+	glm::vec3 tempSphereSpe = glm::vec3(a, b, c);
 
 }
 void createSphereShininess(string result) {
@@ -284,7 +303,7 @@ void createSphereShininess(string result) {
 		result.erase(0, pos + delimiter.length());
 
 	}
-	sphere.sphereShi = (stof(result));
+	float tempSphereShi = (stof(result));
 	
 }
 //Light Functions
@@ -489,10 +508,10 @@ void createTriangleShininess(string result) {
 	triangle.triShi = (stof(result));
 }
 //reference https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
-bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 rayDir, float radians, float &d) {
+bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersection,float& d) {
 	float rad2 = radians * radians;
 	float r0, r1;
-	glm::vec3 L = objectPos - camPos;
+	glm::vec3 L = spherePos - camPos;
 	float rca = glm::dot(L, rayDir);
 
 	float d2 = glm::dot(L, L) - rca * rca;
@@ -513,7 +532,7 @@ bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 rayDir,
 		}
 	}
 	d = r0;
-	
+	intersection = camPos + rayDir * d;
 	return true;
 
 }
@@ -528,15 +547,15 @@ void displayObjectsAttributes() {
 	cout << "Aspect Ratio: " << camera.aspectRatio << endl;
 	cout << endl;
 	cout << "Sphere" << endl;
-	cout << "Position: "<< sphere.spherePos.x << " " << sphere.spherePos.y << " " << sphere.spherePos.z << endl;
-	cout << "Radius: " << sphere.rad << endl;
-	cout << "Ambiance: " << sphere.sphereAmb.x << " " << sphere.sphereAmb.y << " " << sphere.sphereAmb.z << endl;
-	cout << "Diffusion" << sphere.sphereDif.x << " " << sphere.sphereDif.y << " " << sphere.sphereDif.z << endl;
-	cout << "Specular: " << sphere.sphereSpe.x << " " << sphere.sphereSpe.y << " " << sphere.sphereSpe.z << endl;
-	cout << "Shininess: " << sphere.sphereShi << endl;
+	cout << "Position: "<< spheres[1].spherePos.x << " " << spheres[1].spherePos.y << " " << spheres[1].spherePos.z << endl;
+	cout << "Radius: " << spheres[1].rad << endl;
+	cout << "Ambiance: " << spheres[1].sphereAmb.x << " " << spheres[1].sphereAmb.y << " " << spheres[1].sphereAmb.z << endl;
+	cout << "Diffusion" << spheres[1].sphereDif.x << " " << spheres[1].sphereDif.y << " " << spheres[1].sphereDif.z << endl;
+	cout << "Specular: " << spheres[1].sphereSpe.x << " " << spheres[1].sphereSpe.y << " " << spheres[1].sphereSpe.z << endl;
+	cout << "Shininess: " << spheres[1].sphereShi << endl;
 	cout << endl;
 	cout << "Light" << endl;
-	cout << "Position: "<< light.lightPos.x << " " << light.lightPos.y << " " << light.lightPos.z << endl;
+	/*cout << "Position: "<< light.lightPos.x << " " << light.lightPos.y << " " << light.lightPos.z << endl;
 	cout << "Color: " << light.lightColor.x << " " << light.lightColor.y << " " << light.lightColor.z << endl;
 	cout << endl;
 	cout << "Model" << endl;
@@ -553,6 +572,6 @@ void displayObjectsAttributes() {
 	cout << "Ambiance: " << triangle.triAmb.x << " " << triangle.triAmb.y << " " << triangle.triAmb.z << endl;
 	cout << "Diffusion: " << triangle.triDif.x << " " << triangle.triDif.y << " " << triangle.triDif.z << endl;
 	cout << "Specular: " << triangle.triSpe.x << " " << triangle.triSpe.y << " " << triangle.triSpe.z << endl;
-	cout << "Shininess: " << triangle.triShi << endl;
+	cout << "Shininess: " << triangle.triShi << endl;*/
 
 }
