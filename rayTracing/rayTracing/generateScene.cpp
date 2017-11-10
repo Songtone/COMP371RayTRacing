@@ -21,7 +21,7 @@ float camPixelY;
 
 
 int main() {
-	readTextFile("..\\scene_files\\sceneOBJ.txt");
+	readTextFile("..\\scene_files\\scene1.txt");
 	displayObjectsAttributes();
 
 	height = 2 * (camera.focalLength*glm::tan(glm::radians(camera.fieldOfView) / 2));
@@ -39,18 +39,34 @@ int main() {
 			rayDirection = glm::normalize(rayDirection);
 			glm::vec3 colorPixel(0.0f);
 			
-			float tempDist;
-			float distance;
-			glm::vec3 tempIntersect;
+			
+			float closestDistance;
 			glm::vec3 intersect;
+			int closestPixel;
+			int empty = 0;
+			int colorThePixel = 0;
+			for (int k = 0; k < spheres.size(); k++) {//sphere intersect section
+				float tempDist;
+				glm::vec3 tempIntersect;
+				if (sphereIntersection(spheres[k].spherePos, camera.camPos, rayDirection, spheres[k].rad, tempIntersect, tempDist)) {
+					if (!empty || tempDist < closestDistance) {
+						closestDistance = tempDist;
+						intersect = tempIntersect;
+						closestPixel = k;
+
+						colorThePixel = 1;
+					}
+
+					
+				}
+				if (colorThePixel == 1) {
+					colorPixel = spheres[closestPixel].sphereAmb;
+				}
+			}
 			
 
-				if (sphereIntersection(sphere.spherePos, camera.camPos, rayDirection, sphere.rad, tempIntersect, tempDist)) {
-					colorPixel = sphere.sphereAmb;
-				
-				float color[3]{ colorPixel.x,colorPixel.y,colorPixel.z };
-				picture.draw_point(j, i, color);
-			}
+			float color[3]{ colorPixel.x,colorPixel.y,colorPixel.z };
+			picture.draw_point(j, i, color);
 		}
 	}
 	
@@ -96,8 +112,8 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 			getline(readFile, line);
 			createSphereShininess(line);
 
-			//Sphere newSphere(tempSpherePos,tempSphereRad,tempSphereAmb,tempSphereDif,tempSphereSpe,tempSphereShi);
-			//spheres.emplace_back(newSphere);
+			Sphere newSphere(tempSpherePos,tempSphereRad,tempSphereAmb,tempSphereDif,tempSphereSpe,tempSphereShi);
+			spheres.emplace_back(move(newSphere));
 
 
 		}
@@ -230,8 +246,8 @@ void createSpherePosition(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	//glm::vec3 tempSpherePos = glm::vec3(a, b, c);
-	sphere.spherePos = glm::vec3(a, b, c);
+	tempSpherePos = glm::vec3(a, b, c);
+	//sphere.spherePos = glm::vec3(a, b, c);
 
 }
 void createSphereRadius(string result) {
@@ -244,7 +260,8 @@ void createSphereRadius(string result) {
 		result.erase(0, pos + delimiter.length());
 
 	}
-	sphere.rad = (stof(result));
+	tempSphereRad = (stof(result));
+	//sphere.rad = (stof(result));
 }
 void createSphereAmbiant(string result) {
 
@@ -259,8 +276,8 @@ void createSphereAmbiant(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	//glm::vec3 tempSphereAmb = glm::vec3(a, b, c);
-	sphere.sphereAmb = glm::vec3(a, b, c);
+	tempSphereAmb = glm::vec3(a, b, c);
+	//sphere.sphereAmb = glm::vec3(a, b, c);
 
 }
 void createSphereDiffusion(string result) {
@@ -276,8 +293,8 @@ void createSphereDiffusion(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	//glm::vec3 tempSphereDif = glm::vec3(a, b, c);
-		sphere.sphereDif = glm::vec3(a, b, c);
+	tempSphereDif = glm::vec3(a, b, c);
+		//sphere.sphereDif = glm::vec3(a, b, c);
 
 }
 void createSphereSpecular(string result) {
@@ -293,8 +310,8 @@ void createSphereSpecular(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	//glm::vec3 tempSphereSpe = glm::vec3(a, b, c);
-	sphere.sphereSpe = glm::vec3(a, b, c);
+	tempSphereSpe = glm::vec3(a, b, c);
+	//sphere.sphereSpe = glm::vec3(a, b, c);
 
 }
 void createSphereShininess(string result) {
@@ -307,8 +324,8 @@ void createSphereShininess(string result) {
 		result.erase(0, pos + delimiter.length());
 
 	}
-	//float tempSphereShi = (stof(result));
-	sphere.sphereShi = (stof(result));
+	tempSphereShi = (stof(result));
+	//sphere.sphereShi = (stof(result));
 	
 }
 //Light Functions
@@ -542,6 +559,10 @@ bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir,
 
 }
 //reference for triangle https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
+//https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+//bool triangleIntersection(glm::vec3 camPos,) {
+
+//}
 
 void displayObjectsAttributes() {
 
@@ -551,14 +572,22 @@ void displayObjectsAttributes() {
 	cout << "Focal Length: " << camera.focalLength << endl;
 	cout << "Aspect Ratio: " << camera.aspectRatio << endl;
 	cout << endl;
-	cout << "Sphere" << endl;
-	cout << "Position: "<< sphere.spherePos.x << " " << sphere.spherePos.y << " " << sphere.spherePos.z << endl;
-	cout << "Radius: " << sphere.rad << endl;
-	cout << "Ambiance: " << sphere.sphereAmb.x << " " << sphere.sphereAmb.y << " " << sphere.sphereAmb.z << endl;
-	cout << "Diffusion" << sphere.sphereDif.x << " " << sphere.sphereDif.y << " " << sphere.sphereDif.z << endl;
-	cout << "Specular: " << sphere.sphereSpe.x << " " << sphere.sphereSpe.y << " " << sphere.sphereSpe.z << endl;
-	cout << "Shininess: " << sphere.sphereShi << endl;
-	cout << endl;
+	for (int i = 0; i < spheres.size(); i++) {
+		cout << "Sphere" << endl;
+		cout << "Position: " << spheres[i].spherePos.x << " " << spheres[i].spherePos.y << " " << spheres[i].spherePos.z << endl;
+		cout << "Radius: " << spheres[i].rad << endl;
+		cout << "Ambiance: " << spheres[i].sphereAmb.x << " " << spheres[i].sphereAmb.y << " " << spheres[i].sphereAmb.z << endl;
+		cout << "Diffusion" << spheres[i].sphereDif.x << " " << spheres[i].sphereDif.y << " " << spheres[i].sphereDif.z << endl;
+		cout << "Specular: " << spheres[i].sphereSpe.x << " " << spheres[i].sphereSpe.y << " " << spheres[i].sphereSpe.z << endl;
+		cout << "Shininess: " << spheres[i].sphereShi << endl;
+		/*cout << "Position: "<< sphere.spherePos.x << " " << sphere.spherePos.y << " " << sphere.spherePos.z << endl;
+		cout << "Radius: " << sphere.rad << endl;
+		cout << "Ambiance: " << sphere.sphereAmb.x << " " << sphere.sphereAmb.y << " " << sphere.sphereAmb.z << endl;
+		cout << "Diffusion" << sphere.sphereDif.x << " " << sphere.sphereDif.y << " " << sphere.sphereDif.z << endl;
+		cout << "Specular: " << sphere.sphereSpe.x << " " << sphere.sphereSpe.y << " " << sphere.sphereSpe.z << endl;
+		cout << "Shininess: " << sphere.sphereShi << endl;*/
+		cout << endl;
+	}
 	cout << "Light" << endl;
 	cout << "Position: "<< light.lightPos.x << " " << light.lightPos.y << " " << light.lightPos.z << endl;
 	cout << "Color: " << light.lightColor.x << " " << light.lightColor.y << " " << light.lightColor.z << endl;

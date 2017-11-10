@@ -9,15 +9,14 @@ using namespace std;
 class Sphere {
 	
 public:
-	
-	/*Sphere(glm::vec3 p, float r, glm::vec3 a, glm::vec3 d, glm::vec3 s, float sh) {
+	Sphere(glm::vec3 p, float r, glm::vec3 a, glm::vec3 d, glm::vec3 s, float sh) {
 		spherePos = p;
 		rad = r;
 		sphereAmb = a;
 		sphereDif = d;
 		sphereSpe = s;
-		sphereShi = sh;S
-	}*/
+		sphereShi = sh;
+	}
 	glm::vec3 spherePos;
 	float rad;
 	glm::vec3 sphereAmb;

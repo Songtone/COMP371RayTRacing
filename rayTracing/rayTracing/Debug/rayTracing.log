@@ -1,9 +1,10 @@
 ﻿  generateScene.cpp
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(43): warning C4101: 'distance': unreferenced local variable
-  rayTracing.vcxproj -> C:\Users\Seb\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.exe
-  rayTracing.vcxproj -> C:\Users\Seb\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.pdb (Partial PDB)
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(48): warning C4018: '<': signed/unsigned mismatch
+c:\users\songt\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(571): warning C4018: '<': signed/unsigned mismatch
+  rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.exe
+  rayTracing.vcxproj -> C:\Users\songt\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.pdb (Partial PDB)
