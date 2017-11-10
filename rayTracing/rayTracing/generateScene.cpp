@@ -21,14 +21,14 @@ float camPixelY;
 
 
 int main() {
-	readTextFile("..\\scene_files\\scene1.txt");
+	readTextFile("..\\scene_files\\scene6.txt");
 	displayObjectsAttributes();
 
 	height = 2 * (camera.focalLength*glm::tan(glm::radians(camera.fieldOfView) / 2));
 	width = camera.aspectRatio*height;
 	CImg<float> picture(width, height, 1, 3, 0);
-		
-		//starting rayTracing
+
+	//starting rayTracing
 	for (int i = 0; i < height; i++) {//for the height of the image, we will go through every pixel in that width. then go to the next height
 		for (int j = 0; j < width; j++) {
 
@@ -38,43 +38,56 @@ int main() {
 			rayDirection = glm::vec3(camPixelX, camPixelY, -1) - camera.camPos;
 			rayDirection = glm::normalize(rayDirection);
 			glm::vec3 colorPixel(0.0f);
-			
-			
+
+
 			float closestDistance;
 			glm::vec3 intersect;
 			int closestPixel;
 			int empty = 0;
 			int colorThePixel = 0;
 			for (int k = 0; k < spheres.size(); k++) {//sphere intersect section
-				float tempDist;
-				glm::vec3 tempIntersect;
-				if (sphereIntersection(spheres[k].spherePos, camera.camPos, rayDirection, spheres[k].rad, tempIntersect, tempDist)) {
-					if (!empty || tempDist < closestDistance) {
-						closestDistance = tempDist;
-						intersect = tempIntersect;
+				float sphereTempDist;
+				glm::vec3 sphereTempIntersect;
+				if (sphereIntersection(spheres[k].spherePos, camera.camPos, rayDirection, spheres[k].rad, sphereTempIntersect, sphereTempDist)) {
+					if (!empty || sphereTempDist < closestDistance) {
+						closestDistance = sphereTempDist;
+						intersect = sphereTempIntersect;
 						closestPixel = k;
-
+						empty = 1;
 						colorThePixel = 1;
 					}
 
-					
+
 				}
 				if (colorThePixel == 1) {
 					colorPixel = spheres[closestPixel].sphereAmb;
 				}
 			}
-			
+			for (int l = 0; l < triangles.size(); l++) {
+				float triangleTempDist;
+				glm::vec3 triangleTempIntersect;
+				if (triangleIntersection(camera.camPos, rayDirection, triangles[l], triangleTempIntersect, triangleTempDist)) {
+					if (!empty || triangleTempDist < closestDistance) {
+						closestDistance = triangleTempDist;
+						intersect = triangleTempIntersect;
+						/*closestPixel = l;
+						empty = 1;
+						colorThePixel = 1;*/
+						colorPixel = triangles[l].triAmb;
+					}
+				}
+			}
 
 			float color[3]{ colorPixel.x,colorPixel.y,colorPixel.z };
 			picture.draw_point(j, i, color);
 		}
 	}
-	
+
 
 	//display the scene window
 	CImgDisplay sceneDisp(picture, "Current Scene");
 	picture.normalize(0, 255);
-	
+
 	picture.save("dandaman.bmp");
 
 	system("pause");
@@ -112,7 +125,7 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 			getline(readFile, line);
 			createSphereShininess(line);
 
-			Sphere newSphere(tempSpherePos,tempSphereRad,tempSphereAmb,tempSphereDif,tempSphereSpe,tempSphereShi);
+			Sphere newSphere(tempSpherePos, tempSphereRad, tempSphereAmb, tempSphereDif, tempSphereSpe, tempSphereShi);
 			spheres.emplace_back(move(newSphere));
 
 
@@ -155,10 +168,13 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 			getline(readFile, line);
 			createTriangleShininess(line);
 
+			Triangle newTriangle(tempTriangleV1, tempTriangleV2, tempTriangleV3, tempTriangleAmb, tempTriangleDif, tempTriangleSpe,tempTriangleShi);
+			triangles.emplace_back(move(newTriangle));
+
 		}
 	}
 	readFile.close();
-	
+
 }
 //string splitting(string s, string delimiter) {
 //	int counter = 0;
@@ -179,21 +195,21 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 void createCameraPosition(string result) {
 
 	string delimiter = " ";
-	
+
 	size_t pos = 0;
 	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
 		storing.emplace_back(result.substr(0, pos));
 		result.erase(0, pos + delimiter.length());
-	
+
 	}
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
 	camera.camPos = glm::vec3(a, b, c);
-	
+
 }
-void createCameraFOV(string result){
+void createCameraFOV(string result) {
 
 	string delimiter = " ";
 	size_t pos = 0;
@@ -294,7 +310,7 @@ void createSphereDiffusion(string result) {
 	float b = stof(storing[2]);
 	float c = stof(result);
 	tempSphereDif = glm::vec3(a, b, c);
-		//sphere.sphereDif = glm::vec3(a, b, c);
+	//sphere.sphereDif = glm::vec3(a, b, c);
 
 }
 void createSphereSpecular(string result) {
@@ -326,7 +342,7 @@ void createSphereShininess(string result) {
 	}
 	tempSphereShi = (stof(result));
 	//sphere.sphereShi = (stof(result));
-	
+
 }
 //Light Functions
 void createLightPosition(string result) {
@@ -431,22 +447,22 @@ void createModelShininess(string result) {
 
 	}
 	model.modelShi = (stof(result));
-	
+
 }
 void createTriangleV1(string result) {
 
 	string delimiter = " ";
 	size_t pos = 0;
-std::vector<string> storing;
-while ((pos = result.find(delimiter)) != string::npos) {
-	storing.emplace_back(result.substr(0, pos));
-	result.erase(0, pos + delimiter.length());
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
 
-}
-float a = stof(storing[1]);
-float b = stof(storing[2]);
-float c = stof(result);
-triangle.triV1 = glm::vec3(a, b, c);
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	tempTriangleV1 = glm::vec3(a, b, c);
 }
 void createTriangleV2(string result) {
 	string delimiter = " ";
@@ -460,7 +476,7 @@ void createTriangleV2(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	triangle.triV2 = glm::vec3(a, b, c);
+	tempTriangleV2 = glm::vec3(a, b, c);
 }
 void createTriangleV3(string result) {
 	string delimiter = " ";
@@ -474,7 +490,7 @@ void createTriangleV3(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	triangle.triV3 = glm::vec3(a, b, c);
+	tempTriangleV3 = glm::vec3(a, b, c);
 }
 void createTriangleAmbiance(string result) {
 	string delimiter = " ";
@@ -488,7 +504,7 @@ void createTriangleAmbiance(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	triangle.triAmb = glm::vec3(a, b, c);
+	tempTriangleAmb = glm::vec3(a, b, c);
 }
 void createTriangleDiffusion(string result) {
 	string delimiter = " ";
@@ -502,7 +518,7 @@ void createTriangleDiffusion(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	triangle.triDif = glm::vec3(a, b, c);
+	tempTriangleDif = glm::vec3(a, b, c);
 }
 void createTriangleSpecular(string result) {
 	string delimiter = " ";
@@ -516,7 +532,7 @@ void createTriangleSpecular(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	triangle.triSpe = glm::vec3(a, b, c);
+	tempTriangleSpe = glm::vec3(a, b, c);
 }
 void createTriangleShininess(string result) {
 	string delimiter = " ";
@@ -527,10 +543,10 @@ void createTriangleShininess(string result) {
 		result.erase(0, pos + delimiter.length());
 
 	}
-	triangle.triShi = (stof(result));
+	tempTriangleShi = (stof(result));
 }
 //reference https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
-bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersection,float& d) {
+bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersection, float& d) {
 	float rad2 = radians * radians;
 	float r0, r1;
 	glm::vec3 L = spherePos - camPos;
@@ -539,7 +555,7 @@ bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir,
 	float d2 = glm::dot(L, L) - rca * rca;
 	if (d2 > rad2)
 	{
-	return false;
+		return false;
 	}
 	float thc = sqrt((rad2 - d2));
 	r0 = rca - thc;
@@ -560,14 +576,50 @@ bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir,
 }
 //reference for triangle https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
 //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
-//bool triangleIntersection(glm::vec3 camPos,) {
+bool triangleIntersection(glm::vec3 camPos, glm::vec3 rayVector, Triangle inTriangle, glm::vec3& intersection, float &d) {
 
-//}
+	const float EPSILON = 0.0000001;
+
+	glm::vec3 vertex1 = inTriangle.triV1;
+	glm::vec3 vertex2 = inTriangle.triV2;
+	glm::vec3 vertex3 = inTriangle.triV3;
+
+	glm::vec3 edge1, edge2, h, s, q;
+
+	float a, f, u, v;
+	edge1 = vertex2 - vertex1;
+	edge2 = vertex3 - vertex1;
+	h = glm::cross(rayVector, edge2);
+	a = glm::dot(edge1, h);
+
+	if (a > -EPSILON && a < EPSILON)
+		return false;
+	f = 1 / a;
+	s = camPos - vertex1;
+	u = f * (glm::dot(s, h));
+	if (u < 0.0 || u > 1.0)
+		return false;
+	q = glm::cross(s, edge1);
+	v = f * glm::dot(rayVector, q);
+	if (v < 0.0 || u + v > 1.0)
+		return false;
+	// At this stage we can compute t to find out where the intersection point is on the line.
+	float t = f * glm::dot(edge2, q);
+	if (t > EPSILON) // ray intersection
+	{
+		intersection = camPos + rayVector * t;
+		d = t;
+		return true;
+	}
+	else // This means that there is a line intersection but not a ray intersection.
+		return false;
+
+}
 
 void displayObjectsAttributes() {
 
 	cout << "Camera" << endl;
-	cout << "Position: "<< camera.camPos.x <<" "<< camera.camPos.y << " "<< camera.camPos.z << endl;
+	cout << "Position: " << camera.camPos.x << " " << camera.camPos.y << " " << camera.camPos.z << endl;
 	cout << "Field Of View: " << camera.fieldOfView << endl;
 	cout << "Focal Length: " << camera.focalLength << endl;
 	cout << "Aspect Ratio: " << camera.aspectRatio << endl;
@@ -580,16 +632,10 @@ void displayObjectsAttributes() {
 		cout << "Diffusion" << spheres[i].sphereDif.x << " " << spheres[i].sphereDif.y << " " << spheres[i].sphereDif.z << endl;
 		cout << "Specular: " << spheres[i].sphereSpe.x << " " << spheres[i].sphereSpe.y << " " << spheres[i].sphereSpe.z << endl;
 		cout << "Shininess: " << spheres[i].sphereShi << endl;
-		/*cout << "Position: "<< sphere.spherePos.x << " " << sphere.spherePos.y << " " << sphere.spherePos.z << endl;
-		cout << "Radius: " << sphere.rad << endl;
-		cout << "Ambiance: " << sphere.sphereAmb.x << " " << sphere.sphereAmb.y << " " << sphere.sphereAmb.z << endl;
-		cout << "Diffusion" << sphere.sphereDif.x << " " << sphere.sphereDif.y << " " << sphere.sphereDif.z << endl;
-		cout << "Specular: " << sphere.sphereSpe.x << " " << sphere.sphereSpe.y << " " << sphere.sphereSpe.z << endl;
-		cout << "Shininess: " << sphere.sphereShi << endl;*/
 		cout << endl;
 	}
 	cout << "Light" << endl;
-	cout << "Position: "<< light.lightPos.x << " " << light.lightPos.y << " " << light.lightPos.z << endl;
+	cout << "Position: " << light.lightPos.x << " " << light.lightPos.y << " " << light.lightPos.z << endl;
 	cout << "Color: " << light.lightColor.x << " " << light.lightColor.y << " " << light.lightColor.z << endl;
 	cout << endl;
 	cout << "Model" << endl;
@@ -599,13 +645,15 @@ void displayObjectsAttributes() {
 	cout << "Specular: " << model.modelSpe.x << " " << model.modelSpe.y << " " << model.modelSpe.z << endl;
 	cout << "Shininess: " << model.modelShi << endl;
 	cout << endl;
-	cout << "Triangle" << endl;
-	cout << "V1 coord: " << triangle.triV1.x << " " << triangle.triV1.y << " " << triangle.triV1.z << endl;
-	cout << "V2 coord: " << triangle.triV2.x << " " << triangle.triV2.y << " " << triangle.triV2.z << endl;
-	cout << "V3 coord: " << triangle.triV3.x << " " << triangle.triV3.y << " " << triangle.triV3.z << endl;
-	cout << "Ambiance: " << triangle.triAmb.x << " " << triangle.triAmb.y << " " << triangle.triAmb.z << endl;
-	cout << "Diffusion: " << triangle.triDif.x << " " << triangle.triDif.y << " " << triangle.triDif.z << endl;
-	cout << "Specular: " << triangle.triSpe.x << " " << triangle.triSpe.y << " " << triangle.triSpe.z << endl;
-	cout << "Shininess: " << triangle.triShi << endl;
-
+	for (int i = 0; i < triangles.size(); i++) {
+		cout << "Triangle" << endl;
+		cout << "V1 coord: " << triangles[i].triV1.x << " " << triangles[i].triV1.y << " " << triangles[i].triV1.z << endl;
+		cout << "V2 coord: " << triangles[i].triV2.x << " " << triangles[i].triV2.y << " " << triangles[i].triV2.z << endl;
+		cout << "V3 coord: " << triangles[i].triV3.x << " " << triangles[i].triV3.y << " " << triangles[i].triV3.z << endl;
+		cout << "Ambiance: " << triangles[i].triAmb.x << " " << triangles[i].triAmb.y << " " << triangles[i].triAmb.z << endl;
+		cout << "Diffusion: " << triangles[i].triDif.x << " " << triangles[i].triDif.y << " " << triangles[i].triDif.z << endl;
+		cout << "Specular: " << triangles[i].triSpe.x << " " << triangles[i].triSpe.y << " " << triangles[i].triSpe.z << endl;
+		cout << "Shininess: " << triangles[i].triShi << endl;
+		cout << endl;
+	}
 }

@@ -14,11 +14,11 @@ using namespace std;
 Camera camera;
 vector <Sphere> spheres;
 //vector <Light> lights;
-//vector <Triangle> triangles;
+vector <Triangle> triangles;
 //vector <Model> models;
 //Sphere sphere;
 Light light;
-Triangle triangle;
+//Triangle triangle;
 Model model;
 
 glm::vec3 tempSpherePos;
@@ -46,6 +46,7 @@ glm::vec3 tempTriangleSpe;
 float tempTriangleShi;
 
 bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 ray, float radians,glm::vec3& intersection, float &distance);
+bool triangleIntersection(glm::vec3 camPos, glm::vec3 rayVector, Triangle inTriangle, glm::vec3& intersection, float &d);
 
 void readTextFile(string fileName);
 void displayObjectsAttributes();
