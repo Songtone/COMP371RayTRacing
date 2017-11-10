@@ -63,7 +63,7 @@ int main() {
 					colorPixel = spheres[closestPixel].sphereAmb;
 				}
 			}
-			for (int l = 0; l < triangles.size(); l++) {
+			for (int l = 0; l < triangles.size(); l++) {//triangle intersect section
 				float triangleTempDist;
 				glm::vec3 triangleTempIntersect;
 				if (triangleIntersection(camera.camPos, rayDirection, triangles[l], triangleTempIntersect, triangleTempDist)) {
@@ -73,16 +73,27 @@ int main() {
 						closestPixel = l;
 						empty = 1;
 						colorThePixel = 2;
-						
+
 					}
 					if (colorThePixel == 2) {
 						colorPixel = triangles[closestPixel].triAmb;
 					}
 				}
 			}
+			bool shadow;
+			float bias = 1e-3;
+
+			for (int m = 0; m < lights.size(); m++) {//each light gets to check if anything is in the way to project light/ shadow
+				if (colorThePixel != 0) {
+					//get light ray direction
+					glm::vec3 lightRayDirection = glm::normalize(lights[m].lightPos - intersect);
+				}
+			}
 
 			float color[3]{ colorPixel.x,colorPixel.y,colorPixel.z };
 			picture.draw_point(j, i, color);
+
+
 		}
 	}
 
@@ -140,6 +151,9 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 			getline(readFile, line);
 			createLightColor(line);
 
+			Light newLight(tempLightPosition, tempLightColor);
+			lights.emplace_back(move(newLight));
+
 		}
 		else if (line == "model") {
 
@@ -171,7 +185,7 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 			getline(readFile, line);
 			createTriangleShininess(line);
 
-			Triangle newTriangle(tempTriangleV1, tempTriangleV2, tempTriangleV3, tempTriangleAmb, tempTriangleDif, tempTriangleSpe,tempTriangleShi);
+			Triangle newTriangle(tempTriangleV1, tempTriangleV2, tempTriangleV3, tempTriangleAmb, tempTriangleDif, tempTriangleSpe, tempTriangleShi);
 			triangles.emplace_back(move(newTriangle));
 
 		}
@@ -361,7 +375,7 @@ void createLightPosition(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	light.lightPos = glm::vec3(a, b, c);
+	tempLightPosition = glm::vec3(a, b, c);
 
 }
 void createLightColor(string result) {
@@ -377,7 +391,7 @@ void createLightColor(string result) {
 	float a = stof(storing[1]);
 	float b = stof(storing[2]);
 	float c = stof(result);
-	light.lightColor = glm::vec3(a, b, c);
+	tempLightColor = glm::vec3(a, b, c);
 }
 //Model Functions
 void createModelName(string result) {
@@ -637,10 +651,12 @@ void displayObjectsAttributes() {
 		cout << "Shininess: " << spheres[i].sphereShi << endl;
 		cout << endl;
 	}
-	cout << "Light" << endl;
-	cout << "Position: " << light.lightPos.x << " " << light.lightPos.y << " " << light.lightPos.z << endl;
-	cout << "Color: " << light.lightColor.x << " " << light.lightColor.y << " " << light.lightColor.z << endl;
-	cout << endl;
+	for (int i = 0; i < lights.size(); i++) {
+		cout << "Light" << endl;
+		cout << "Position: " << lights[i].lightPos.x << " " << lights[i].lightPos.y << " " << lights[i].lightPos.z << endl;
+		cout << "Color: " << lights[i].lightColor.x << " " << lights[i].lightColor.y << " " << lights[i].lightColor.z << endl;
+		cout << endl;
+	}
 	cout << "Model" << endl;
 	cout << "Model Name: " << model.modelFile << endl;
 	cout << "Ambiance: " << model.modelAmb.x << " " << model.modelAmb.y << " " << model.modelAmb.z << endl;
@@ -648,6 +664,7 @@ void displayObjectsAttributes() {
 	cout << "Specular: " << model.modelSpe.x << " " << model.modelSpe.y << " " << model.modelSpe.z << endl;
 	cout << "Shininess: " << model.modelShi << endl;
 	cout << endl;
+
 	for (int i = 0; i < triangles.size(); i++) {
 		cout << "Triangle" << endl;
 		cout << "V1 coord: " << triangles[i].triV1.x << " " << triangles[i].triV1.y << " " << triangles[i].triV1.z << endl;

@@ -6,7 +6,10 @@
 
 class Light {
 public:
-
+	Light(glm::vec3 p, glm::vec3 c) {
+		lightPos = p;
+		lightColor = c;
+	}
 	glm::vec3 lightPos;
 	glm::vec3 lightColor;
 

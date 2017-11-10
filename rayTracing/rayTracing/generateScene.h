@@ -13,11 +13,11 @@ using namespace std;
 
 Camera camera;
 vector <Sphere> spheres;
-//vector <Light> lights;
+vector <Light> lights;
 vector <Triangle> triangles;
 //vector <Model> models;
 //Sphere sphere;
-Light light;
+//Light light;
 //Triangle triangle;
 Model model;
 
