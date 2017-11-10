@@ -175,7 +175,7 @@ int main() {
 
 				}
 			}
-			//if there is nothing in the way, it will just return the background color which is black
+			//if there is nothing in the way(no intersect), it will just return the background color which is black
 			float color[3]{ colorPixel.x,colorPixel.y,colorPixel.z };
 			picture.draw_point(j, i, color);
 
