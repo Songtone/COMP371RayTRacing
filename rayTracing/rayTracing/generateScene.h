@@ -12,16 +12,38 @@ using namespace std;
 
 
 Camera camera;
-vector <Sphere> spheres;
-vector <Light> lights;
-vector <Triangle> triangles;
-vector <Model> models;
+//vector <Sphere> spheres;
+//vector <Light> lights;
+//vector <Triangle> triangles;
+//vector <Model> models;
+Sphere sphere;
+Light light;
+Triangle triangle;
+Model model;
+
 glm::vec3 tempSpherePos;
 float tempSphereRad;
 glm::vec3 tempSphereDif;
 glm::vec3 tempSphereAmb;
 glm::vec3 tempSphereSpe;
 float tempSphereShi;
+
+glm::vec3 tempLightPosition;
+glm::vec3 tempLightColor;
+
+string tempModelFile;
+glm::vec3 tempModelAmb;
+glm::vec3 tempModelDif;
+glm::vec3 tempModelSpe;
+float tempModelShi;
+
+glm::vec3 tempTriangleV1;
+glm::vec3 tempTriangleV2;
+glm::vec3 tempTriangleV3;
+glm::vec3 tempTriangleAmb;
+glm::vec3 tempTriangleDif;
+glm::vec3 tempTriangleSpe;
+float tempTriangleShi;
 
 bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 ray, float radians,glm::vec3& intersection, float &distance);
 
