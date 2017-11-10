@@ -21,7 +21,7 @@ float camPixelY;
 
 
 int main() {
-	readTextFile("..\\scene_files\\scene1.txt");
+	readTextFile("..\\scene_files\\scene2.txt");
 	displayObjectsAttributes();
 
 	height = 2 * (camera.focalLength*glm::tan(glm::radians(camera.fieldOfView) / 2));
@@ -59,9 +59,9 @@ int main() {
 
 
 				}
-				if (colorThePixel == 1) {
+				/*if (colorThePixel == 1) {
 					colorPixel = spheres[closestPixel].sphereAmb;
-				}
+				}*/
 			}
 			for (int l = 0; l < triangles.size(); l++) {//triangle intersect section
 				float triangleTempDist;
@@ -75,21 +75,107 @@ int main() {
 						colorThePixel = 2;
 
 					}
-					if (colorThePixel == 2) {
+					/*if (colorThePixel == 2) {
 						colorPixel = triangles[closestPixel].triAmb;
-					}
+					}*/
 				}
 			}
-			bool shadow;
-			float bias = 1e-3;
+			bool shadow = true;
+			float shadowOffset = 1e-3;
 
 			for (int m = 0; m < lights.size(); m++) {//each light gets to check if anything is in the way to project light/ shadow
 				if (colorThePixel != 0) {
 					//get light ray direction
 					glm::vec3 lightRayDirection = glm::normalize(lights[m].lightPos - intersect);
+
+					//see if the light goes through this sphere object
+					for (int k = 0; k < spheres.size(); k++) {
+						float tempSphereDist;
+						glm::vec3 tempSphereIntersect;
+						if (sphereIntersection(spheres[k].spherePos, intersect + (shadowOffset * lightRayDirection), lightRayDirection, spheres[k].rad, tempSphereIntersect, tempSphereDist)) {
+							shadow = false;
+						}
+
+					}
+					//see if the light goes through this triangle object
+					for (int k = 0; k < triangles.size(); k++) {
+						float tempTriangleDist;
+						glm::vec3 tempTriangleIntersect;
+						if (triangleIntersection(intersect + (shadowOffset * lightRayDirection), lightRayDirection, triangles[k], tempTriangleIntersect, tempTriangleDist)) {
+							shadow = false;
+						}
+
+					}
+				}
+
+				//adding colors with the lighting effects
+				//sphere section
+				if (colorThePixel == 1) {
+					if (shadow) {
+						glm::vec3 sphereNormal = glm::normalize(spheres[closestPixel].spherePos - intersect);
+						glm::vec3 oppositeRayDirection = -rayDirection;
+
+						glm::vec3 lightDirection = glm::normalize(intersect - lights[m].lightPos);
+						glm::vec3 sphereReflection = glm::reflect(lightDirection, sphereNormal);
+
+						float a = glm::dot(sphereNormal, lightDirection);
+						float b = glm::dot(sphereReflection, oppositeRayDirection);
+
+						if (a < 0) {
+							a = 0;
+						}
+						if (b < 0) {
+							b = 0;
+						}
+
+						b = pow(b, spheres[closestPixel].sphereShi);
+
+						colorPixel += spheres[closestPixel].sphereAmb;
+						glm::vec3 addingLight = lights[m].lightColor * (spheres[closestPixel].sphereDif * a + spheres[closestPixel].sphereSpe * b);
+						colorPixel += addingLight;
+					}
+					else {
+						colorPixel += spheres[closestPixel].sphereAmb;
+					}
+
+				}
+				//triangle section
+				else if (colorThePixel == 2) {
+					if (shadow) {
+						glm::vec3 triEdge1 = triangles[closestPixel].triV2 - triangles[closestPixel].triV1;
+						glm::vec3 triEdge2 = triangles[closestPixel].triV3 - triangles[closestPixel].triV1;
+						glm::vec3 triangleNormal = glm::normalize(glm::cross(triEdge1, triEdge2));
+						triangleNormal = -triangleNormal;
+
+						glm::vec3 oppositeRayDirection = -rayDirection;
+						glm::vec3 lightDirection = glm::normalize(intersect - lights[m].lightPos);
+						glm::vec3 triangleReflection = glm::reflect(lightDirection, triangleNormal);
+
+						float a = glm::dot(triangleNormal, lightDirection);
+						float b = glm::dot(triangleReflection, oppositeRayDirection);
+
+						if (a < 0) {
+							a = 0;
+						}
+						if (b < 0) {
+							b = 0;
+						}
+
+						b = pow(b, triangles[closestPixel].triShi);
+
+
+						colorPixel += triangles[closestPixel].triAmb;
+						glm::vec3 addingLight = lights[m].lightColor * (triangles[closestPixel].triDif * a + triangles[closestPixel].triSpe * b);
+						colorPixel += addingLight;
+
+					}
+					else {
+						colorPixel += triangles[closestPixel].triAmb;
+					}
+
 				}
 			}
-
+			//if there is nothing in the way, it will just return the background color which is black
 			float color[3]{ colorPixel.x,colorPixel.y,colorPixel.z };
 			picture.draw_point(j, i, color);
 
@@ -646,7 +732,7 @@ void displayObjectsAttributes() {
 		cout << "Position: " << spheres[i].spherePos.x << " " << spheres[i].spherePos.y << " " << spheres[i].spherePos.z << endl;
 		cout << "Radius: " << spheres[i].rad << endl;
 		cout << "Ambiance: " << spheres[i].sphereAmb.x << " " << spheres[i].sphereAmb.y << " " << spheres[i].sphereAmb.z << endl;
-		cout << "Diffusion" << spheres[i].sphereDif.x << " " << spheres[i].sphereDif.y << " " << spheres[i].sphereDif.z << endl;
+		cout << "Diffusion: " << spheres[i].sphereDif.x << " " << spheres[i].sphereDif.y << " " << spheres[i].sphereDif.z << endl;
 		cout << "Specular: " << spheres[i].sphereSpe.x << " " << spheres[i].sphereSpe.y << " " << spheres[i].sphereSpe.z << endl;
 		cout << "Shininess: " << spheres[i].sphereShi << endl;
 		cout << endl;
