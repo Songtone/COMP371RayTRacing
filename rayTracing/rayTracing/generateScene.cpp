@@ -21,7 +21,7 @@ float camPixelY;
 
 
 int main() {
-	readTextFile("..\\scene_files\\scene6.txt");
+	readTextFile("..\\scene_files\\scene1.txt");
 	displayObjectsAttributes();
 
 	height = 2 * (camera.focalLength*glm::tan(glm::radians(camera.fieldOfView) / 2));
@@ -70,10 +70,13 @@ int main() {
 					if (!empty || triangleTempDist < closestDistance) {
 						closestDistance = triangleTempDist;
 						intersect = triangleTempIntersect;
-						/*closestPixel = l;
+						closestPixel = l;
 						empty = 1;
-						colorThePixel = 1;*/
-						colorPixel = triangles[l].triAmb;
+						colorThePixel = 2;
+						
+					}
+					if (colorThePixel == 2) {
+						colorPixel = triangles[closestPixel].triAmb;
 					}
 				}
 			}
@@ -546,7 +549,7 @@ void createTriangleShininess(string result) {
 	tempTriangleShi = (stof(result));
 }
 //reference https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
-bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersection, float& d) {
+bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersection, float& d) {//sphere intersection
 	float rad2 = radians * radians;
 	float r0, r1;
 	glm::vec3 L = spherePos - camPos;
@@ -575,7 +578,7 @@ bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir,
 
 }
 //reference for triangle https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
-//https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+//https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm/ triangle intersection
 bool triangleIntersection(glm::vec3 camPos, glm::vec3 rayVector, Triangle inTriangle, glm::vec3& intersection, float &d) {
 
 	const float EPSILON = 0.0000001;
