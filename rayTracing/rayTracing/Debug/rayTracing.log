@@ -10,9 +10,9 @@ c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(8
 c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(86): warning C4018: '<': signed/unsigned mismatch
 c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(92): warning C4018: '<': signed/unsigned mismatch
 c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(101): warning C4018: '<': signed/unsigned mismatch
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(684): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(730): warning C4018: '<': signed/unsigned mismatch
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(740): warning C4018: '<': signed/unsigned mismatch
-c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(754): warning C4018: '<': signed/unsigned mismatch
+c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(770): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(816): warning C4018: '<': signed/unsigned mismatch
+c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(826): warning C4018: '<': signed/unsigned mismatch
+c:\users\seb\desktop\comp371raytracing\raytracing\raytracing\generatescene.cpp(840): warning C4018: '<': signed/unsigned mismatch
   rayTracing.vcxproj -> C:\Users\Seb\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.exe
   rayTracing.vcxproj -> C:\Users\Seb\Desktop\COMP371RayTRacing\rayTracing\Debug\rayTracing.pdb (Partial PDB)

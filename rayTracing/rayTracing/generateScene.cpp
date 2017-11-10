@@ -275,6 +275,20 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 			triangles.emplace_back(move(newTriangle));
 
 		}
+		else if (line == "plane") {
+
+			getline(readFile, line);
+			createPlaneNormal(line);
+			getline(readFile, line);
+			createPlanePosition(line);
+			getline(readFile, line);
+			createPlaneAmbiance(line);
+			getline(readFile, line);
+			createPlaneDiffusion(line);
+			getline(readFile, line);
+			createPlaneSpecular(line);
+
+		}
 	}
 	readFile.close();
 
@@ -298,7 +312,6 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 void createCameraPosition(string result) {
 
 	string delimiter = " ";
-
 	size_t pos = 0;
 	std::vector<string> storing;
 	while ((pos = result.find(delimiter)) != string::npos) {
@@ -648,6 +661,79 @@ void createTriangleShininess(string result) {
 	}
 	tempTriangleShi = (stof(result));
 }
+void createPlaneNormal(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	plane.planeNorm = glm::vec3(a, b, c);
+}
+void createPlanePosition(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	plane.planePos = glm::vec3(a, b, c);
+}
+void createPlaneAmbiance(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	plane.planeAmb = glm::vec3(a, b, c);
+
+}
+void createPlaneDiffusion(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	plane.planeDif = glm::vec3(a, b, c);
+
+}
+void createPlaneSpecular(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	float a = stof(storing[1]);
+	float b = stof(storing[2]);
+	float c = stof(result);
+	plane.planeSpe = glm::vec3(a, b, c);
+
+}
 //reference https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
 bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersection, float& d) {//sphere intersection
 	float rad2 = radians * radians;
@@ -719,6 +805,7 @@ bool triangleIntersection(glm::vec3 camPos, glm::vec3 rayVector, Triangle inTria
 
 }
 
+
 void displayObjectsAttributes() {
 
 	cout << "Camera" << endl;
@@ -762,4 +849,11 @@ void displayObjectsAttributes() {
 		cout << "Shininess: " << triangles[i].triShi << endl;
 		cout << endl;
 	}
+
+	cout << "Plane" << endl;
+	cout << "Normal: " << plane.planeNorm.x << " " << plane.planeNorm.y << " " << plane.planeNorm.z << endl;
+	cout << "Position: " << plane.planePos.x << " " << plane.planePos.y << " " << plane.planePos.z << endl;
+	cout << "Ambiance: " << plane.planeAmb.x << " " << plane.planeAmb.y << " " << plane.planeAmb.z << endl;
+	cout << "Diffusion: " << plane.planeDif.x << " " << plane.planeDif.y << " " << plane.planeDif.z << endl;
+	cout << "Specular: " << plane.planeSpe.x << " " << plane.planeSpe.y << " " << plane.planeSpe.z << endl;
 }

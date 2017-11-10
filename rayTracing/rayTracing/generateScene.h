@@ -6,6 +6,7 @@
 #include "light.h"
 #include "model.h"
 #include "triangle.h"
+#include "plane.h"
 #include <vector>
 
 using namespace std;
@@ -15,10 +16,7 @@ Camera camera;
 vector <Sphere> spheres;
 vector <Light> lights;
 vector <Triangle> triangles;
-//vector <Model> models;
-//Sphere sphere;
-//Light light;
-//Triangle triangle;
+Plane plane;
 Model model;
 
 glm::vec3 tempSpherePos;
@@ -79,4 +77,10 @@ void createModelAmbiance(string result);
 void createModelDiffusion(string result);
 void createModelSpecular(string result);
 void createModelShininess(string result);
+
+void createPlaneNormal(string result);
+void createPlanePosition(string result);
+void createPlaneAmbiance(string result);
+void createPlaneDiffusion(string result);
+void createPlaneSpecular(string result);
 #endif // !GENERATESCENE_H
