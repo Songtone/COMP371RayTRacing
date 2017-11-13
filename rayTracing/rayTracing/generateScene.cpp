@@ -7,7 +7,7 @@
 #include "CImg.h"
 #include "../glm/glm.hpp"
 //used this website to learn about ray tracing https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays
-
+//got help from Daniel Privorotsky
 using namespace std;
 using namespace cimg_library;
 
@@ -21,7 +21,7 @@ float camPixelY;
 
 
 int main() {
-	readTextFile("..\\scene_files\\scene2.txt");
+	readTextFile("..\\scene_files\\scene4.txt");
 	displayObjectsAttributes();
 
 	height = 2 * (camera.focalLength*glm::tan(glm::radians(camera.fieldOfView) / 2));
@@ -80,6 +80,21 @@ int main() {
 					}*/
 				}
 			}
+			float planeTempDist;
+			glm::vec3 planeTempIntersect;
+			if (planeIntersection(plane.planeNorm,plane.planePos,camera.camPos,rayDirection,planeTempIntersect,planeTempDist)) {
+				if (!empty || planeTempDist < closestDistance) {
+					closestDistance = planeTempDist;
+					intersect = planeTempIntersect;
+					empty = 1;
+					colorThePixel = 3;
+
+				}
+				if (colorThePixel == 3) {
+					colorPixel = plane.planeAmb;
+				}
+			}
+
 			bool shadow = true;
 			float shadowOffset = 1e-3;
 
@@ -233,7 +248,7 @@ void readTextFile(string fileName) {//reading and storing all the attribute info
 		else if (line == "light") {
 
 			getline(readFile, line);
-			createLightColor(line);
+			createLightPosition(line);
 			getline(readFile, line);
 			createLightColor(line);
 
@@ -471,8 +486,8 @@ void createLightPosition(string result) {
 		result.erase(0, pos + delimiter.length());
 
 	}
-	float a = stof(storing[1]);
-	float b = stof(storing[2]);
+		float a = stof(storing.at(1));
+	float b = stof(storing.at(2));
 	float c = stof(result);
 	tempLightPosition = glm::vec3(a, b, c);
 
@@ -734,6 +749,19 @@ void createPlaneSpecular(string result) {
 	plane.planeSpe = glm::vec3(a, b, c);
 
 }
+void createPlaneShininess(string result) {
+	string delimiter = " ";
+	size_t pos = 0;
+	std::vector<string> storing;
+	while ((pos = result.find(delimiter)) != string::npos) {
+		storing.emplace_back(result.substr(0, pos));
+		result.erase(0, pos + delimiter.length());
+
+	}
+	
+	plane.planeShi = (stof(result));
+
+}
 //reference https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection
 bool sphereIntersection(glm::vec3 spherePos, glm::vec3 camPos, glm::vec3 rayDir, float radians, glm::vec3& intersection, float& d) {//sphere intersection
 	float rad2 = radians * radians;
@@ -804,8 +832,21 @@ bool triangleIntersection(glm::vec3 camPos, glm::vec3 rayVector, Triangle inTria
 		return false;
 
 }
+bool planeIntersection(glm::vec3 norm, glm::vec3 origin, glm::vec3 rayOrigin, glm::vec3 rayDirection,glm::vec3 pointOfIntersect, float &t) {
 
+	norm = glm::normalize(norm);
 
+	float denom = glm::dot(norm, rayDirection);
+	if (abs(denom) > 1e-6) {
+		glm::vec3 dist = origin - rayOrigin;
+		t = glm::dot(dist, norm);
+		pointOfIntersect = rayOrigin + rayDirection * t;
+		
+		return(t >= 0);
+
+	}
+	return false;
+}
 void displayObjectsAttributes() {
 
 	cout << "Camera" << endl;

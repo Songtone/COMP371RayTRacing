@@ -19,6 +19,7 @@ vector <Triangle> triangles;
 Plane plane;
 Model model;
 
+//temporary variables to hold values.
 glm::vec3 tempSpherePos;
 float tempSphereRad;
 glm::vec3 tempSphereDif;
@@ -43,12 +44,17 @@ glm::vec3 tempTriangleDif;
 glm::vec3 tempTriangleSpe;
 float tempTriangleShi;
 
+//functions being used to determine the intersections
 bool sphereIntersection(glm::vec3 objectPos, glm::vec3 camPos, glm::vec3 ray, float radians,glm::vec3& intersection, float &distance);
 bool triangleIntersection(glm::vec3 camPos, glm::vec3 rayVector, Triangle inTriangle, glm::vec3& intersection, float &d);
+bool planeIntersection(glm::vec3 norm, glm::vec3 origin, glm::vec3 rayOrigin, glm::vec3 rayDirection, glm::vec3 pointOfIntersect, float &t);
 
+//functions to read and display the information on the text file.
 void readTextFile(string fileName);
 void displayObjectsAttributes();
 
+
+//all the functions used to parse the info.
 void createCameraPosition(string result);
 void createCameraFOV(string result);
 void createCameraFocalLength(string result);
@@ -83,4 +89,5 @@ void createPlanePosition(string result);
 void createPlaneAmbiance(string result);
 void createPlaneDiffusion(string result);
 void createPlaneSpecular(string result);
+void createPlaneShininess(string result);
 #endif // !GENERATESCENE_H

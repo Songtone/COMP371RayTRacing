@@ -15,6 +15,7 @@ public:
 	glm::vec3 planeAmb;
 	glm::vec3 planeDif;
 	glm::vec3 planeSpe;
+	float planeShi;
 	
 
 
